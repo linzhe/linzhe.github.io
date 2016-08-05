@@ -270,6 +270,163 @@
             
               
                 
+                <a class="post-title-link" href="/2016/08/05/spark-mllib-regularizer/" itemprop="url">
+                  Spark MLlib 正则化
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-08-05T23:21:01+08:00" content="2016-08-05">
+              2016-08-05
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Spark/" itemprop="url" rel="index">
+                    <span itemprop="name">Spark</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/08/05/spark-mllib-regularizer/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/08/05/spark-mllib-regularizer/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2016/08/05/spark-mllib-regularizer/" class="leancloud_visitors" data-flag-title="Spark MLlib 正则化">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="4-1-正则化"><a href="#4-1-正则化" class="headerlink" title="4.1 正则化"></a>4.1 正则化</h1><p>正则化是为了约束训练过程，使其向生成简单模型的方向收敛，从而避免过拟合。MLlib目前支持下面的正则化方法：</p>
+<table>
+<thead>
+<tr>
+<th>范数</th>
+<th>regularizer</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>L1</td>
+<td>$$\</td>
+<td>w\</td>
+<td>_1$$</td>
+<td>促进产生稀疏的权值</td>
+</tr>
+<tr>
+<td>L2</td>
+<td>$$\frac{1}{2}\</td>
+<td>w\</td>
+<td>_2^2$$</td>
+<td>平滑</td>
+</tr>
+</tbody>
+</table>
+<h3 id="MLlib正则化抽象类"><a href="#MLlib正则化抽象类" class="headerlink" title="MLlib正则化抽象类"></a>MLlib正则化抽象类</h3><figure class="highlight scala"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">Updater</span> <span class="keyword">extends</span> <span class="title">Serializable</span> </span>&#123;</div><div class="line">  <span class="comment">/**</span></div><div class="line">   * Compute an updated value for weights given the gradient, stepSize, iteration number and</div><div class="line">   * regularization parameter. Also returns the regularization value regParam * R(w)</div><div class="line">   * computed using the *updated* weights.</div><div class="line">   *</div><div class="line">   * @param weightsOld - Column matrix of size dx1 where d is the number of features.</div><div class="line">   * @param gradient - Column matrix of size dx1 where d is the number of features.</div><div class="line">   * @param stepSize - step size across iterations</div><div class="line">   * @param iter - Iteration number</div><div class="line">   * @param regParam - Regularization parameter</div><div class="line">   *</div><div class="line">   * @return A tuple of 2 elements. The first element is a column matrix containing updated weights,</div><div class="line">   *         and the second element is the regularization value computed using updated weights.</div><div class="line">   */</div><div class="line">  <span class="function"><span class="keyword">def</span> <span class="title">compute</span></span>(</div><div class="line">      weightsOld: <span class="type">Vector</span>,</div><div class="line">      gradient: <span class="type">Vector</span>,</div><div class="line">      stepSize: <span class="type">Double</span>,</div><div class="line">      iter: <span class="type">Int</span>,</div><div class="line">      regParam: <span class="type">Double</span>): (<span class="type">Vector</span>, <span class="type">Double</span>)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="L1范式"><a href="#L1范式" class="headerlink" title="L1范式"></a>L1范式</h3><figure class="highlight scala"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@DeveloperApi</span></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">L1Updater</span> <span class="keyword">extends</span> <span class="title">Updater</span> </span>&#123;</div><div class="line">  <span class="keyword">override</span> <span class="function"><span class="keyword">def</span> <span class="title">compute</span></span>(</div><div class="line">      weightsOld: <span class="type">Vector</span>,</div><div class="line">      gradient: <span class="type">Vector</span>,</div><div class="line">      stepSize: <span class="type">Double</span>,</div><div class="line">      iter: <span class="type">Int</span>,</div><div class="line">      regParam: <span class="type">Double</span>): (<span class="type">Vector</span>, <span class="type">Double</span>) = &#123;</div><div class="line">    <span class="keyword">val</span> thisIterStepSize = stepSize / math.sqrt(iter)</div><div class="line">    <span class="comment">// Take gradient step</span></div><div class="line">    <span class="keyword">val</span> brzWeights: <span class="type">BV</span>[<span class="type">Double</span>] = weightsOld.asBreeze.toDenseVector</div><div class="line">    brzAxpy(-thisIterStepSize, gradient.asBreeze, brzWeights)</div><div class="line">    <span class="comment">// Apply proximal operator (soft thresholding)</span></div><div class="line">    <span class="keyword">val</span> shrinkageVal = regParam * thisIterStepSize</div><div class="line">    <span class="keyword">var</span> i = <span class="number">0</span></div><div class="line">    <span class="keyword">val</span> len = brzWeights.length</div><div class="line">    <span class="keyword">while</span> (i &lt; len) &#123;</div><div class="line">      <span class="keyword">val</span> wi = brzWeights(i)</div><div class="line">      brzWeights(i) = signum(wi) * max(<span class="number">0.0</span>, abs(wi) - shrinkageVal)</div><div class="line">      i += <span class="number">1</span></div><div class="line">    &#125;</div><div class="line"></div><div class="line">    (<span class="type">Vectors</span>.fromBreeze(brzWeights), brzNorm(brzWeights, <span class="number">1.0</span>) * regParam)</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="L2范式"><a href="#L2范式" class="headerlink" title="L2范式"></a>L2范式</h3><figure class="highlight scala"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@DeveloperApi</span></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">SquaredL2Updater</span> <span class="keyword">extends</span> <span class="title">Updater</span> </span>&#123;</div><div class="line">  <span class="keyword">override</span> <span class="function"><span class="keyword">def</span> <span class="title">compute</span></span>(</div><div class="line">      weightsOld: <span class="type">Vector</span>,</div><div class="line">      gradient: <span class="type">Vector</span>,</div><div class="line">      stepSize: <span class="type">Double</span>,</div><div class="line">      iter: <span class="type">Int</span>,</div><div class="line">      regParam: <span class="type">Double</span>): (<span class="type">Vector</span>, <span class="type">Double</span>) = &#123;</div><div class="line">    <span class="comment">// add up both updates from the gradient of the loss (= step) as well as</span></div><div class="line">    <span class="comment">// the gradient of the regularizer (= regParam * weightsOld)</span></div><div class="line">    <span class="comment">// w' = w - thisIterStepSize * (gradient + regParam * w)</span></div><div class="line">    <span class="comment">// w' = (1 - thisIterStepSize * regParam) * w - thisIterStepSize * gradient</span></div><div class="line">    <span class="keyword">val</span> thisIterStepSize = stepSize / math.sqrt(iter)</div><div class="line">    <span class="keyword">val</span> brzWeights: <span class="type">BV</span>[<span class="type">Double</span>] = weightsOld.asBreeze.toDenseVector</div><div class="line">    brzWeights :*= (<span class="number">1.0</span> - thisIterStepSize * regParam)</div><div class="line">    brzAxpy(-thisIterStepSize, gradient.asBreeze, brzWeights)</div><div class="line">    <span class="keyword">val</span> norm = brzNorm(brzWeights, <span class="number">2.0</span>)</div><div class="line"></div><div class="line">    (<span class="type">Vectors</span>.fromBreeze(brzWeights), <span class="number">0.5</span> * regParam * norm * norm)</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2016/08/04/spark-rdd/" itemprop="url">
                   spark RDD 操作
                 </a>
@@ -1163,7 +1320,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">6</span>
+              <span class="site-state-item-count">7</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -1180,7 +1337,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">7</span>
+                <span class="site-state-item-count">8</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
