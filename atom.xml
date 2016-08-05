@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>LinZhe&#39;s Notes</title>
+  <subtitle>Work notes</subtitle>
+  <link href="/atom.xml" rel="self"/>
+  
+  <link href="http://www.linzhe.me/"/>
+  <updated>2016-08-05T15:09:25.000Z</updated>
+  <id>http://www.linzhe.me/</id>
+  
+  <author>
+    <name>Zhe Lin</name>
+    
+  </author>
+  
+  <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>spark RDD 操作</title>
+    <link href="http://www.linzhe.me/2016/08/04/spark-rdd/"/>
+    <id>http://www.linzhe.me/2016/08/04/spark-rdd/</id>
+    <published>2016-08-04T12:06:29.000Z</published>
+    <updated>2016-08-05T15:09:25.000Z</updated>
+    
+    <content type="html">&lt;h1 id=&quot;2-1-Spark-RDD操作&quot;&gt;&lt;a href=&quot;#2-1-Spark-RDD操作&quot; class=&quot;headerlink&quot; title=&quot;2.1 Spark RDD操作&quot;&gt;&lt;/a&gt;2.1 Spark RDD操作&lt;/h1&gt;&lt;h2 id=&quot;2-1-1-RDD是什么？&quot;&gt;&lt;a href=&quot;#2-1-1-RDD是什么？&quot; class=&quot;headerlink&quot; title=&quot;2.1.1 RDD是什么？&quot;&gt;&lt;/a&gt;2.1.1 RDD是什么？&lt;/h2&gt;&lt;p&gt;弹性分布式数据集RDD是Spark中的抽象数据结构类型，任何数据在Spark中都被表示为RDD。&lt;/p&gt;
+&lt;figure class=&quot;highlight scala&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;4&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;abstract&lt;/span&gt; &lt;span class=&quot;class&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;RDD&lt;/span&gt;[&lt;span class=&quot;type&quot;&gt;T&lt;/span&gt;: &lt;span class=&quot;type&quot;&gt;ClassTag&lt;/span&gt;](&lt;span class=&quot;params&quot;&gt;&lt;/span&gt;&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;    @transient private var _sc: &lt;span class=&quot;type&quot;&gt;SparkContext&lt;/span&gt;,&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;    @transient private var deps: &lt;span class=&quot;type&quot;&gt;Seq&lt;/span&gt;[&lt;span class=&quot;type&quot;&gt;Dependency&lt;/span&gt;[_]]&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;  ) &lt;span class=&quot;keyword&quot;&gt;extends&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;Serializable&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;with&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;Logging&lt;/span&gt;&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;RDD还提供了一组丰富的操作来操作这些数据。在这些操作中，诸如map、flatMap、filter等转换操作实现了monad模式，很好地契合了Scala的集合操作。除此之外，RDD还提供了诸如join、groupBy、reduceByKey等更为方便的操作（注意，reduceByKey是action，而非transformation），以支持常见的数据运算。RDD可以简单看成是一个数组。和普通数组的区别是，RDD中的数据是分区存储的，这样不同分区的数据就可以分布在不同的机器上，同时可以被并行处理。因此，Spark应用程序所做的就是把需要处理的数据转换为RDD，然后对RDD进行一系列的变换和操作从而得到结果。RDD的接口只支持粗粒度的操作，一个操作会被应用到RDD上所有的数据上。&lt;/p&gt;
+&lt;h2 id=&quot;2-1-2-RDD基本转换操作&quot;&gt;&lt;a href=&quot;#2-1-2-RDD基本转换操作&quot; class=&quot;headerlink&quot; title=&quot;2.1.2 RDD基本转换操作&quot;&gt;&lt;/a&gt;2.1.2 RDD基本转换操作&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;map操作将RDD中类型为T的元素一对一的映射为类型为U的元素&lt;/li&gt;
+&lt;/ul&gt;
+&lt;figure class=&quot;highlight scala&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;4&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;map&lt;/span&gt;&lt;/span&gt;[&lt;span class=&quot;type&quot;&gt;U&lt;/span&gt;: &lt;span class=&quot;type&quot;&gt;ClassTag&lt;/span&gt;](f: &lt;span class=&quot;type&quot;&gt;T&lt;/span&gt; =&amp;gt; &lt;span class=&quot;type&quot;&gt;U&lt;/span&gt;): &lt;span class=&quot;type&quot;&gt;RDD&lt;/span&gt;[&lt;span class=&quot;type&quot;&gt;U&lt;/span&gt;] = withScope &amp;#123;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;  &lt;span class=&quot;keyword&quot;&gt;val&lt;/span&gt; cleanF = sc.clean(f)&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;  &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;type&quot;&gt;MapPartitionsRDD&lt;/span&gt;[&lt;span class=&quot;type&quot;&gt;U&lt;/span&gt;, &lt;span class=&quot;type&quot;&gt;T&lt;/span&gt;](&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;, (context, pid, iter) =&amp;gt; iter.map(cleanF))&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&amp;#125;&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;举例&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;4&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;5&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;6&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;7&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;8&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;scala&amp;gt; var rdd = sc.makeRDD(1 to 5, 1)&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;rdd: org.apache.spark.rdd.RDD[Int] = ParallelCollectionRDD[1] at makeRDD at &amp;lt;console&amp;gt;:21&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;scala&amp;gt; rdd.collect()&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;res2: Array[Int] = Array(1, 2, 3, 4, 5)&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;scala&amp;gt; val mapRDD = rdd.map(x =&amp;gt; x.toFloat)&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;mapRDD: org.apache.spark.rdd.RDD[Float] = MapPartitionsRDD[2] at map at &amp;lt;console&amp;gt;:23&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;scala&amp;gt; mapRDD.collect()&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;res3: Array[Float] = Array(1.0, 2.0, 3.0, 4.0, 5.0)&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;ul&gt;
+&lt;li&gt;distinct操作返回RDD中所有不一样的元素&lt;/li&gt;
+&lt;/ul&gt;
+&lt;figure class=&quot;highlight scala&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;distinct&lt;/span&gt;&lt;/span&gt;(numPartitions: &lt;span class=&quot;type&quot;&gt;Int&lt;/span&gt;)(&lt;span class=&quot;keyword&quot;&gt;implicit&lt;/span&gt; ord: &lt;span class=&quot;type&quot;&gt;Ordering&lt;/span&gt;[&lt;span class=&quot;type&quot;&gt;T&lt;/span&gt;] = &lt;span class=&quot;literal&quot;&gt;null&lt;/span&gt;): &lt;span class=&quot;type&quot;&gt;RDD&lt;/span&gt;[&lt;span class=&quot;type&quot;&gt;T&lt;/span&gt;] = withScope &amp;#123;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;  map(x =&amp;gt; (x, &lt;span class=&quot;literal&quot;&gt;null&lt;/span&gt;)).reduceByKey((x, y) =&amp;gt; x, numPartitions).map(_._1)&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&amp;#125;&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;ul&gt;
+&lt;li&gt;flatMap操作将RDD中每一个元素进行一对多转换&lt;/li&gt;
+&lt;/ul&gt;
+&lt;figure class=&quot;highlight scala&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;4&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;flatMap&lt;/span&gt;&lt;/span&gt;[&lt;span class=&quot;type&quot;&gt;U&lt;/span&gt;: &lt;span class=&quot;type&quot;&gt;ClassTag&lt;/span&gt;](f: &lt;span class=&quot;type&quot;&gt;T&lt;/span&gt; =&amp;gt; &lt;span class=&quot;type&quot;&gt;TraversableOnce&lt;/span&gt;[&lt;span class=&quot;type&quot;&gt;U&lt;/span&gt;]): &lt;span class=&quot;type&quot;&gt;RDD&lt;/span&gt;[&lt;span class=&quot;type&quot;&gt;U&lt;/span&gt;] = withScope &amp;#123;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;  &lt;span class=&quot;keyword&quot;&gt;val&lt;/span&gt; cleanF = sc.clean(f)&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;  &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;type&quot;&gt;MapPartitionsRDD&lt;/span&gt;[&lt;span class=&quot;type&quot;&gt;U&lt;/span&gt;, &lt;span class=&quot;type&quot;&gt;T&lt;/span&gt;](&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;, (context, pid, iter) =&amp;gt; iter.flatMap(cleanF))&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&amp;#125;&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;  举例&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;4&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;scala&amp;gt; val flatMapRDD = rdd.flatMap(x =&amp;gt; 1 to x)&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;flatMapRDD: org.apache.spark.rdd.RDD[Int] = MapPartitionsRDD[3] at flatMap at &amp;lt;console&amp;gt;:23&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;scala&amp;gt; flatMapRDD.collect()&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;res4: Array[Int] = Array(1, 1, 2, 1, 2, 3, 1, 2, 3, 4, 1, 2, 3, 4, 5)&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;filter操作对RDD中的元素进行过滤&lt;/li&gt;
+&lt;/ul&gt;
+&lt;figure class=&quot;highlight scala&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;4&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;5&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;6&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;7&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;filter&lt;/span&gt;&lt;/span&gt;(f: &lt;span class=&quot;type&quot;&gt;T&lt;/span&gt; =&amp;gt; &lt;span class=&quot;type&quot;&gt;Boolean&lt;/span&gt;): &lt;span class=&quot;type&quot;&gt;RDD&lt;/span&gt;[&lt;span class=&quot;type&quot;&gt;T&lt;/span&gt;] = withScope &amp;#123;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;  &lt;span class=&quot;keyword&quot;&gt;val&lt;/span&gt; cleanF = sc.clean(f)&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;  &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;type&quot;&gt;MapPartitionsRDD&lt;/span&gt;[&lt;span class=&quot;type&quot;&gt;T&lt;/span&gt;, &lt;span class=&quot;type&quot;&gt;T&lt;/span&gt;](&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;,&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;    (context, pid, iter) =&amp;gt; iter.filter(cleanF),&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;    preservesPartitioning = &lt;span class=&quot;literal&quot;&gt;true&lt;/span&gt;)&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&amp;#125;&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;h2 id=&quot;2-1-3-键值RDD转换操作&quot;&gt;&lt;a href=&quot;#2-1-3-键值RDD转换操作&quot; class=&quot;headerlink&quot; title=&quot;2.1.3 键值RDD转换操作&quot;&gt;&lt;/a&gt;2.1.3 键值RDD转换操作&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;combineByKey、foldByKey、reduceByKey、groupByKey这四种操作类型，都是针对RDD[K, V]进行，最终会归结为combineByKey的操作上。&lt;br&gt;combineByKey的内部实现分成三部分来完成：&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;首先，根据是否需要在map端进行combine操作决定是否对RDD进行一次mapPartitions操作，从而减少shuffle的数据量。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;第2步根据partitioner函数对MapPartitionsRDD进行shuffle操作。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;最后对suffle的结果进行combine操作。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;ul&gt;
+&lt;li&gt;join、leftOuterJoin、rightOuterJoin针对RDD[K, V]中K值相等的连接操作，最终归结为cogroup来实现。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;figure class=&quot;highlight scala&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;4&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;5&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;6&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;7&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;8&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;9&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;10&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;cogroup&lt;/span&gt;&lt;/span&gt;[&lt;span class=&quot;type&quot;&gt;W&lt;/span&gt;](other: &lt;span class=&quot;type&quot;&gt;RDD&lt;/span&gt;[(&lt;span class=&quot;type&quot;&gt;K&lt;/span&gt;, &lt;span class=&quot;type&quot;&gt;W&lt;/span&gt;)], partitioner: &lt;span class=&quot;type&quot;&gt;Partitioner&lt;/span&gt;)&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;    : &lt;span class=&quot;type&quot;&gt;RDD&lt;/span&gt;[(&lt;span class=&quot;type&quot;&gt;K&lt;/span&gt;, (&lt;span class=&quot;type&quot;&gt;Iterable&lt;/span&gt;[&lt;span class=&quot;type&quot;&gt;V&lt;/span&gt;], &lt;span class=&quot;type&quot;&gt;Iterable&lt;/span&gt;[&lt;span class=&quot;type&quot;&gt;W&lt;/span&gt;]))] = self.withScope &amp;#123;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;  &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (partitioner.isInstanceOf[&lt;span class=&quot;type&quot;&gt;HashPartitioner&lt;/span&gt;] &amp;amp;&amp;amp; keyClass.isArray) &amp;#123;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;throw&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;type&quot;&gt;SparkException&lt;/span&gt;(&lt;span class=&quot;string&quot;&gt;&quot;Default partitioner cannot partition array keys.&quot;&lt;/span&gt;)&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;  &amp;#125;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;  &lt;span class=&quot;keyword&quot;&gt;val&lt;/span&gt; cg = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;type&quot;&gt;CoGroupedRDD&lt;/span&gt;[&lt;span class=&quot;type&quot;&gt;K&lt;/span&gt;](&lt;span class=&quot;type&quot;&gt;Seq&lt;/span&gt;(self, other), partitioner)&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;  cg.mapValues &amp;#123; &lt;span class=&quot;keyword&quot;&gt;case&lt;/span&gt; &lt;span class=&quot;type&quot;&gt;Array&lt;/span&gt;(vs, w1s) =&amp;gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;    (vs.asInstanceOf[&lt;span class=&quot;type&quot;&gt;Iterable&lt;/span&gt;[&lt;span class=&quot;type&quot;&gt;V&lt;/span&gt;]], w1s.asInstanceOf[&lt;span class=&quot;type&quot;&gt;Iterable&lt;/span&gt;[&lt;span class=&quot;type&quot;&gt;W&lt;/span&gt;]])&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;  &amp;#125;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&amp;#125;&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;一个join操作会产生CoGroupRDD、MapValuesRDD、FlatMapValuesRDD三个RDD。&lt;/p&gt;
+&lt;figure class=&quot;highlight scala&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;4&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;5&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;join&lt;/span&gt;&lt;/span&gt;[&lt;span class=&quot;type&quot;&gt;W&lt;/span&gt;](other: &lt;span class=&quot;type&quot;&gt;RDD&lt;/span&gt;[(&lt;span class=&quot;type&quot;&gt;K&lt;/span&gt;, &lt;span class=&quot;type&quot;&gt;W&lt;/span&gt;)], partitioner: &lt;span class=&quot;type&quot;&gt;Partitioner&lt;/span&gt;): &lt;span class=&quot;type&quot;&gt;RDD&lt;/span&gt;[(&lt;span class=&quot;type&quot;&gt;K&lt;/span&gt;, (&lt;span class=&quot;type&quot;&gt;V&lt;/span&gt;, &lt;span class=&quot;type&quot;&gt;W&lt;/span&gt;))] = self.withScope &amp;#123;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;  &lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;.cogroup(other, partitioner).flatMapValues( pair =&amp;gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;for&lt;/span&gt; (v &amp;lt;- pair._1.iterator; w &amp;lt;- pair._2.iterator) &lt;span class=&quot;keyword&quot;&gt;yield&lt;/span&gt; (v, w)&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;  )&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&amp;#125;&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;h2 id=&quot;2-1-4-RDD依赖关系&quot;&gt;&lt;a href=&quot;#2-1-4-RDD依赖关系&quot; class=&quot;headerlink&quot; title=&quot;2.1.4 RDD依赖关系&quot;&gt;&lt;/a&gt;2.1.4 RDD依赖关系&lt;/h2&gt;&lt;p&gt;因为RDD操作是粗粒度的，每一个转换操作都会产生一个新有RDD，所以前后的RDD就会形成前后依赖关系。Spark中有两种依赖类型，窄依赖（Narrow Dependenceis）和宽依赖（Wide Dependencies）。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;窄依赖，每一个父RDD的分区最多只被子RDD的一个分区所依赖，map、filter、union操作就会形成一个窄依赖&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;宽依赖，多个子RDD的分区会依赖于同一个父RDD的分区。两个RDD数据集之间进行join操作就会形成宽依赖。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&quot;2-1-5-使用Spark实现PageRank算法&quot;&gt;&lt;a href=&quot;#2-1-5-使用Spark实现PageRank算法&quot; class=&quot;headerlink&quot; title=&quot;2.1.5 使用Spark实现PageRank算法&quot;&gt;&lt;/a&gt;2.1.5 使用Spark实现PageRank算法&lt;/h2&gt;&lt;p&gt;PageRank，网页排名，又称网页级别、Google左侧排名或佩奇排名，是一种由搜索引擎根据网页之间相互的超链接计算的技术，而作为网页排名的要素之一，以Google公司创办人拉里·佩奇（Larry Page）之姓来命名。Google用它来体现网页的相关性和重要性，在搜索引擎优化操作中是经常被用来评估网页优化的成效因素之一。&lt;/p&gt;
+&lt;p&gt;PageRank通过网络浩瀚的超链接关系来确定一个页面的等级。Google把从A页面到B页面的链接解释为A页面给B页面投票，Google根据投票来源（甚至来源的来源，即链接到A页面的页面）和投票目标的等级来决定新的等级。简单的说，一个高等级的页面可以使其他低等级页面的等级提升。[来源&lt;a href=&quot;https://zh.wikipedia.org/wiki/PageRank&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;维基百科&lt;/a&gt;]&lt;/p&gt;
+&lt;p&gt;其算法原理如下：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;通过链接关系将网页构建成Web图，每个页面设置相同的PageRank值，初始一般为1。&lt;/li&gt;
+&lt;li&gt;将每一个网页的权重贡献发送给相邻的网页，权重贡献=权重/指向的URL个数&lt;/li&gt;
+&lt;li&gt;对天每一个网页，将收到的权重贡献相加记为contribs，重新计算权重rank=0.15 + contribs*0.85&lt;/li&gt;
+&lt;li&gt;迭代1、2、3，直到收敛。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;利用Spark的各种操作方法，可以方便的实现PageRank算法，实现如下：&lt;/p&gt;
+&lt;figure class=&quot;highlight scala&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;4&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;5&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;6&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;7&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;8&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;9&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;10&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;type&quot;&gt;MAX_ITERATION&lt;/span&gt; = &lt;span class=&quot;number&quot;&gt;20&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;val&lt;/span&gt; links = sc.parallelize(&lt;span class=&quot;type&quot;&gt;Array&lt;/span&gt;((&#39;&lt;span class=&quot;type&quot;&gt;A&lt;/span&gt;&#39;, &lt;span class=&quot;type&quot;&gt;Array&lt;/span&gt;(&#39;&lt;span class=&quot;type&quot;&gt;D&lt;/span&gt;&#39;)), (&#39;&lt;span class=&quot;type&quot;&gt;B&lt;/span&gt;&#39;, &lt;span class=&quot;type&quot;&gt;Array&lt;/span&gt;(&#39;&lt;span class=&quot;type&quot;&gt;A&lt;/span&gt;&#39;)), (&#39;&lt;span class=&quot;type&quot;&gt;C&lt;/span&gt;&#39;, &lt;span class=&quot;type&quot;&gt;Array&lt;/span&gt;(&#39;&lt;span class=&quot;type&quot;&gt;A&lt;/span&gt;&#39;, &#39;&lt;span class=&quot;type&quot;&gt;B&lt;/span&gt;&#39;)), (&#39;&lt;span class=&quot;type&quot;&gt;D&lt;/span&gt;&#39;, &lt;span class=&quot;type&quot;&gt;Array&lt;/span&gt;(&#39;&lt;span class=&quot;type&quot;&gt;A&lt;/span&gt;&#39;, &#39;&lt;span class=&quot;type&quot;&gt;C&lt;/span&gt;&#39;))), &lt;span class=&quot;number&quot;&gt;2&lt;/span&gt;).map(x =&amp;gt; (x._1,x._2)).cache()&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;var&lt;/span&gt; ranks = sc.parallelize(&lt;span class=&quot;type&quot;&gt;Array&lt;/span&gt;((&#39;&lt;span class=&quot;type&quot;&gt;A&lt;/span&gt;&#39;, &lt;span class=&quot;number&quot;&gt;1.0&lt;/span&gt;), (&#39;&lt;span class=&quot;type&quot;&gt;B&lt;/span&gt;&#39;, &lt;span class=&quot;number&quot;&gt;1.0&lt;/span&gt;), (&#39;&lt;span class=&quot;type&quot;&gt;C&lt;/span&gt;&#39;, &lt;span class=&quot;number&quot;&gt;1.0&lt;/span&gt;), (&#39;&lt;span class=&quot;type&quot;&gt;D&lt;/span&gt;&#39;, &lt;span class=&quot;number&quot;&gt;1.0&lt;/span&gt;)), &lt;span class=&quot;number&quot;&gt;2&lt;/span&gt;)&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;for&lt;/span&gt; (i &amp;lt;- &lt;span class=&quot;number&quot;&gt;1&lt;/span&gt; to &lt;span class=&quot;type&quot;&gt;MAX_ITERATION&lt;/span&gt;) &amp;#123;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;  &lt;span class=&quot;keyword&quot;&gt;val&lt;/span&gt; contribs = links.join(ranks, &lt;span class=&quot;number&quot;&gt;2&lt;/span&gt;).flatMap &amp;#123;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;case&lt;/span&gt; (url, (links, rank)) =&amp;gt; links.map(dest =&amp;gt; (dest, rank/links.size))&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;  &amp;#125;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;  ranks = contribs.reduceByKey(_ + _, &lt;span class=&quot;number&quot;&gt;2&lt;/span&gt;).mapValues(&lt;span class=&quot;number&quot;&gt;0.15&lt;/span&gt; + &lt;span class=&quot;number&quot;&gt;0.85&lt;/span&gt; * _)&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&amp;#125;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;ranks.collect()&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;最终结果：&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;res15: Array[(Char, Double)] = Array((B,0.4613200524321036), (D,1.3705281840649928), (A,1.4357617405523626), (C,0.7323900229505396))&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;2-1-Spark-RDD操作&quot;&gt;&lt;a href=&quot;#2-1-Spark-RDD操作&quot; class=&quot;headerlink&quot; title=&quot;2.1 Spark RDD操作&quot;&gt;&lt;/a&gt;2.1 Spark RDD操作&lt;/h1&gt;&lt;h2 id=&quot;2-1-1-RDD是什么？
+    
+    </summary>
+    
+      <category term="Spark" scheme="http://www.linzhe.me/categories/Spark/"/>
+    
+    
+      <category term="Spark" scheme="http://www.linzhe.me/tags/Spark/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>system log extract from chromium code</title>
+    <link href="http://www.linzhe.me/2016/07/15/system-log-extract-from-chromium-code-md/"/>
+    <id>http://www.linzhe.me/2016/07/15/system-log-extract-from-chromium-code-md/</id>
+    <published>2016-07-15T08:33:10.000Z</published>
+    <updated>2016-08-05T14:19:37.000Z</updated>
+    
+    <content type="html">&lt;p&gt;glog是Google的一个应用程序的日志库。它提供基于C++风格的流的日志API，以及各种辅助的宏。打印日志只需以流的形式传给 LOG(level) ，例如：&lt;br&gt;&lt;figure class=&quot;highlight cpp&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;VLOG(INFO) &amp;lt;&amp;lt; &lt;span class=&quot;string&quot;&gt;&quot;File Path: &quot;&lt;/span&gt; &amp;lt;&amp;lt; file_path;&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;glog是Google的一个应用程序的日志库。它提供基于C++风格的流的日志API，以及各种辅助的宏。打印日志只需以流的形式传给 LOG(level) ，例如：&lt;br&gt;&lt;figure class=&quot;highlight cpp&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;g
+    
+    </summary>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>cache server： 冷热数据切换</title>
+    <link href="http://www.linzhe.me/2016/07/14/cache-server-start-up/"/>
+    <id>http://www.linzhe.me/2016/07/14/cache-server-start-up/</id>
+    <published>2016-07-14T11:43:00.000Z</published>
+    <updated>2016-08-05T14:19:37.000Z</updated>
+    
+    <content type="html">&lt;h3 id=&quot;背景&quot;&gt;&lt;a href=&quot;#背景&quot; class=&quot;headerlink&quot; title=&quot;背景&quot;&gt;&lt;/a&gt;背景&lt;/h3&gt;&lt;p&gt;leveldb是一个Google开发的高性能的字符串类型的K-V存储C/C++类库，其详细介绍可参考&lt;a href=&quot;https://github.com/google/leveldb&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Github主页&lt;/a&gt;，刚开始工作时使用过一段时间，用于存储爬虫系统爬取的大量网页数据。但是后来就一直没有使用过。&lt;br&gt;最近在做推荐时，发现user profile的数据实在太大，即使有类似于Redis集群1T的内存也没法将用户所有有数据cache下来，一直想着能不能做个冷热的备件系统加大对user profile数据存储数量，结合leveldb和redis。&lt;/p&gt;
+&lt;h3 id=&quot;leveldb的优势&quot;&gt;&lt;a href=&quot;#leveldb的优势&quot; class=&quot;headerlink&quot; title=&quot;leveldb的优势&quot;&gt;&lt;/a&gt;leveldb的优势&lt;/h3&gt;&lt;p&gt;LevelDB内部采用连续的块存储数据，充分发挥了顺序磁盘I/O的性能，并且运用了现代操作系统里的高性能缓冲区管理。这样的结构正好迎合了现代内存的层次式结构， 避免了与产生高性能的操作系统决策之间的冲突。&lt;/p&gt;
+&lt;h3 id=&quot;redis&quot;&gt;&lt;a href=&quot;#redis&quot; class=&quot;headerlink&quot; title=&quot;redis&quot;&gt;&lt;/a&gt;redis&lt;/h3&gt;&lt;p&gt;Redis 是完全开源免费的，遵守BSD协议，是一个高性能的key-value数据库。&lt;br&gt;Redis不仅仅支持简单的key-value类型的数据，同时还提供list，set，zset，hash等数据结构的存储。&lt;br&gt;从3.0版本开始，Redis支持数据的备份，即master-slave模式的数据备份。&lt;/p&gt;
+&lt;h3 id=&quot;冷热数据&quot;&gt;&lt;a href=&quot;#冷热数据&quot; class=&quot;headerlink&quot; title=&quot;冷热数据&quot;&gt;&lt;/a&gt;冷热数据&lt;/h3&gt;&lt;p&gt;因为redis强劲的性能，与leveldb互相配合，将冷热数据分开存储，互相交换数据，以达到冷热切换的目的。&lt;/p&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;h3 id=&quot;背景&quot;&gt;&lt;a href=&quot;#背景&quot; class=&quot;headerlink&quot; title=&quot;背景&quot;&gt;&lt;/a&gt;背景&lt;/h3&gt;&lt;p&gt;leveldb是一个Google开发的高性能的字符串类型的K-V存储C/C++类库，其详细介绍可参考&lt;a href=&quot;https://git
+    
+    </summary>
+    
+      <category term="cache_server" scheme="http://www.linzhe.me/categories/cache-server/"/>
+    
+    
+      <category term="leveldb" scheme="http://www.linzhe.me/tags/leveldb/"/>
+    
+      <category term="redis" scheme="http://www.linzhe.me/tags/redis/"/>
+    
+      <category term="cache_server" scheme="http://www.linzhe.me/tags/cache-server/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>微信推荐系统</title>
+    <link href="http://www.linzhe.me/2016/07/10/build-recommendtion-system/"/>
+    <id>http://www.linzhe.me/2016/07/10/build-recommendtion-system/</id>
+    <published>2016-07-10T02:31:00.000Z</published>
+    <updated>2016-08-05T14:19:37.000Z</updated>
+    
+    <content type="html">&lt;h3 id=&quot;爬虫&quot;&gt;&lt;a href=&quot;#爬虫&quot; class=&quot;headerlink&quot; title=&quot;爬虫&quot;&gt;&lt;/a&gt;爬虫&lt;/h3&gt;&lt;ol&gt;
+&lt;li&gt;正文抽取&lt;/li&gt;
+&lt;li&gt;主题抽取&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id=&quot;推荐引擎&quot;&gt;&lt;a href=&quot;#推荐引擎&quot; class=&quot;headerlink&quot; title=&quot;推荐引擎&quot;&gt;&lt;/a&gt;推荐引擎&lt;/h3&gt;&lt;ol&gt;
+&lt;li&gt;tag rank&lt;/li&gt;
+&lt;li&gt;协同过滤&lt;/li&gt;
+&lt;li&gt;user profile&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id=&quot;客户端&quot;&gt;&lt;a href=&quot;#客户端&quot; class=&quot;headerlink&quot; title=&quot;客户端&quot;&gt;&lt;/a&gt;客户端&lt;/h3&gt;&lt;ol&gt;
+&lt;li&gt;iOS&lt;/li&gt;
+&lt;li&gt;Android&lt;/li&gt;
+&lt;/ol&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;h3 id=&quot;爬虫&quot;&gt;&lt;a href=&quot;#爬虫&quot; class=&quot;headerlink&quot; title=&quot;爬虫&quot;&gt;&lt;/a&gt;爬虫&lt;/h3&gt;&lt;ol&gt;
+&lt;li&gt;正文抽取&lt;/li&gt;
+&lt;li&gt;主题抽取&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id=&quot;推荐引擎&quot;&gt;&lt;a href=&quot;#推荐引擎&quot; clas
+    
+    </summary>
+    
+      <category term="github" scheme="http://www.linzhe.me/categories/github/"/>
+    
+    
+      <category term="推荐系统" scheme="http://www.linzhe.me/tags/%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Setting up a Github Pages blog with Hexo</title>
+    <link href="http://www.linzhe.me/2016/07/10/Setting-up-a-Github-Pages-blog-with-Hexo/"/>
+    <id>http://www.linzhe.me/2016/07/10/Setting-up-a-Github-Pages-blog-with-Hexo/</id>
+    <published>2016-07-09T16:14:33.000Z</published>
+    <updated>2016-08-05T14:19:37.000Z</updated>
+    
+    <content type="html">&lt;h3 id=&quot;安装-Node-js&quot;&gt;&lt;a href=&quot;#安装-Node-js&quot; class=&quot;headerlink&quot; title=&quot;安装 Node.js&quot;&gt;&lt;/a&gt;安装 Node.js&lt;/h3&gt;&lt;hr&gt;
+&lt;ol&gt;
+&lt;li&gt;从&lt;a href=&quot;https://nodejs.org/en/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Node.js下载地址&lt;/a&gt;下载相应的包进行安装&lt;/li&gt;
+&lt;li&gt;在安装好Node.js，会默认安装好npm&lt;/li&gt;
+&lt;li&gt;使用npm安装Hexo&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;npm install -g hexo&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id=&quot;使用Hexo&quot;&gt;&lt;a href=&quot;#使用Hexo&quot; class=&quot;headerlink&quot; title=&quot;使用Hexo&quot;&gt;&lt;/a&gt;使用Hexo&lt;/h3&gt;&lt;hr&gt;
+&lt;h4 id=&quot;创建文件目录&quot;&gt;&lt;a href=&quot;#创建文件目录&quot; class=&quot;headerlink&quot; title=&quot;创建文件目录&quot;&gt;&lt;/a&gt;创建文件目录&lt;/h4&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;$ hexo init username.github.io&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;$ cd username.github.io&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;h4 id=&quot;修改相关的配置，使用github部署&quot;&gt;&lt;a href=&quot;#修改相关的配置，使用github部署&quot; class=&quot;headerlink&quot; title=&quot;修改相关的配置，使用github部署&quot;&gt;&lt;/a&gt;修改相关的配置，使用github部署&lt;/h4&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;vi _config.yml&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;在Deployment的配置中添加&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;deploy:&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;  repo: https://github.com/username/username.github.io&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;  type: git&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+&lt;h3 id=&quot;本地测试&quot;&gt;&lt;a href=&quot;#本地测试&quot; class=&quot;headerlink&quot; title=&quot;本地测试&quot;&gt;&lt;/a&gt;本地测试&lt;/h3&gt;&lt;p&gt;使用Hexo命令&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;hexo server&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;启动本地测试服务，访问&lt;a href=&quot;http://localhost:4000&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;http://localhost:4000&lt;/a&gt;，可以看到默认的主题与blog文章。&lt;/p&gt;
+&lt;h3 id=&quot;更多Hexo命令&quot;&gt;&lt;a href=&quot;#更多Hexo命令&quot; class=&quot;headerlink&quot; title=&quot;更多Hexo命令&quot;&gt;&lt;/a&gt;更多Hexo命令&lt;/h3&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;hexo deploy # 部署到github&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;hexo generate # 生成静态文件&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;hexo clean    # 清除生成的静态文件&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;h3 id=&quot;更多主题&quot;&gt;&lt;a href=&quot;#更多主题&quot; class=&quot;headerlink&quot; title=&quot;更多主题&quot;&gt;&lt;/a&gt;更多主题&lt;/h3&gt;&lt;p&gt;默认的主题可以在&lt;a href=&quot;http://www.hexo.io/theme&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;hexo.io&lt;/a&gt;中获取，方法很简单，只要将主题的代码chechout到theme目录下，然后修改_config.yml文件中的theme的值，重启测试服务就可以，十分方便。&lt;/p&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;h3 id=&quot;安装-Node-js&quot;&gt;&lt;a href=&quot;#安装-Node-js&quot; class=&quot;headerlink&quot; title=&quot;安装 Node.js&quot;&gt;&lt;/a&gt;安装 Node.js&lt;/h3&gt;&lt;hr&gt;
+&lt;ol&gt;
+&lt;li&gt;从&lt;a href=&quot;https://nodejs.or
+    
+    </summary>
+    
+      <category term="github" scheme="http://www.linzhe.me/categories/github/"/>
+    
+    
+      <category term="Markdown" scheme="http://www.linzhe.me/tags/Markdown/"/>
+    
+      <category term="github" scheme="http://www.linzhe.me/tags/github/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Markdown Cheatsheet</title>
+    <link href="http://www.linzhe.me/2016/07/09/markdown-cheatsheet/"/>
+    <id>http://www.linzhe.me/2016/07/09/markdown-cheatsheet/</id>
+    <published>2016-07-09T15:48:25.000Z</published>
+    <updated>2016-08-05T14:19:37.000Z</updated>
+    
+    <content type="html">&lt;h1 id=&quot;一级标题&quot;&gt;&lt;a href=&quot;#一级标题&quot; class=&quot;headerlink&quot; title=&quot;一级标题&quot;&gt;&lt;/a&gt;一级标题&lt;/h1&gt;&lt;h2 id=&quot;二级标题&quot;&gt;&lt;a href=&quot;#二级标题&quot; class=&quot;headerlink&quot; title=&quot;二级标题&quot;&gt;&lt;/a&gt;二级标题&lt;/h2&gt;&lt;h3 id=&quot;三级标题&quot;&gt;&lt;a href=&quot;#三级标题&quot; class=&quot;headerlink&quot; title=&quot;三级标题&quot;&gt;&lt;/a&gt;三级标题&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;列表1&lt;/li&gt;
+&lt;li&gt;列表2&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ol&gt;
+&lt;li&gt;序列表1&lt;/li&gt;
+&lt;li&gt;序列表2&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;a href=&quot;http://baidu.com&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;链接&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://ww4.sinaimg.cn/bmiddle/aa397b7fjw1dzplsgpdw5j.jpg&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;引用&lt;br&gt;示例&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;&lt;em&gt;斜体&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;粗体&lt;/strong&gt;&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Tables&lt;/th&gt;
+&lt;th style=&quot;text-align:center&quot;&gt;Are&lt;/th&gt;
+&lt;th style=&quot;text-align:right&quot;&gt;cool&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;col 3 is&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;right-aligned&lt;/td&gt;
+&lt;td style=&quot;text-align:right&quot;&gt;$1600&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;$ hexo new &lt;span class=&quot;string&quot;&gt;&quot;My New Post&quot;&lt;/span&gt;&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;一级标题&quot;&gt;&lt;a href=&quot;#一级标题&quot; class=&quot;headerlink&quot; title=&quot;一级标题&quot;&gt;&lt;/a&gt;一级标题&lt;/h1&gt;&lt;h2 id=&quot;二级标题&quot;&gt;&lt;a href=&quot;#二级标题&quot; class=&quot;headerlink&quot; title=&quot;二级标题&quot;&gt;&lt;/a
+    
+    </summary>
+    
+      <category term="Note" scheme="http://www.linzhe.me/categories/Note/"/>
+    
+    
+      <category term="Markdown" scheme="http://www.linzhe.me/tags/Markdown/"/>
+    
+  </entry>
+  
+</feed>
