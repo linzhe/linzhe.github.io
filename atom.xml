@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.linzhe.me/"/>
-  <updated>2016-08-06T16:09:03.000Z</updated>
+  <updated>2016-11-26T09:28:06.000Z</updated>
   <id>http://www.linzhe.me/</id>
   
   <author>
@@ -14,6 +14,63 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>mac安装caffe过程</title>
+    <link href="http://www.linzhe.me/2016/11/26/20161126-install-caffe-on-mac/"/>
+    <id>http://www.linzhe.me/2016/11/26/20161126-install-caffe-on-mac/</id>
+    <published>2016-11-26T05:51:29.000Z</published>
+    <updated>2016-11-26T09:28:06.000Z</updated>
+    
+    <content type="html">&lt;h1 id=&quot;0-关于Caffe&quot;&gt;&lt;a href=&quot;#0-关于Caffe&quot; class=&quot;headerlink&quot; title=&quot;0. 关于Caffe&quot;&gt;&lt;/a&gt;0. 关于Caffe&lt;/h1&gt;&lt;p&gt;昨天看到amazon将mxnet做的其深度深度算法的消息，突然觉得应该开始学习一些深度学习的知识了。&lt;br&gt;本来想试试mxnet的，但是觉得还是先从caffe开始吧。caffe是深度学习在图像领域广泛使用的框架，有很多现在的model可以直接使用。&lt;/p&gt;
+&lt;h1 id=&quot;1-安装依赖&quot;&gt;&lt;a href=&quot;#1-安装依赖&quot; class=&quot;headerlink&quot; title=&quot;1. 安装依赖&quot;&gt;&lt;/a&gt;1. 安装依赖&lt;/h1&gt;&lt;p&gt;使用brew安装依赖，首先更新一下brew，不然可能出现意想不到的各种错误。&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;/usr/bin/ruby -e &amp;quot;$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)&amp;quot;&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;然后安装依赖&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;brew install -vd snappy leveldb gflags glog szip lmdb&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;brew tap homebrew/science&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;brew install hdf5 opencv protobuf boost&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;h1 id=&quot;2-编译&quot;&gt;&lt;a href=&quot;#2-编译&quot; class=&quot;headerlink&quot; title=&quot;2. 编译&quot;&gt;&lt;/a&gt;2. 编译&lt;/h1&gt;&lt;p&gt;下载caffe源码&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;git clone https://github.com/bvlc/caffe.git&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;cd caffe&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;cp Makefile.config.example Makefile.config&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;修改编译模式开关&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;CPU_ONLY := 1&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;编译&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;make -j&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;编译完成，可以开始动手运行例子了！&lt;/p&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;0-关于Caffe&quot;&gt;&lt;a href=&quot;#0-关于Caffe&quot; class=&quot;headerlink&quot; title=&quot;0. 关于Caffe&quot;&gt;&lt;/a&gt;0. 关于Caffe&lt;/h1&gt;&lt;p&gt;昨天看到amazon将mxnet做的其深度深度算法的消息，突然觉得应该开始学习一
+    
+    </summary>
+    
+      <category term="深度学习" scheme="http://www.linzhe.me/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"/>
+    
+    
+      <category term="caffe" scheme="http://www.linzhe.me/tags/caffe/"/>
+    
+      <category term="深度学习" scheme="http://www.linzhe.me/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>机器学习基础系列：Logistic Regression</title>
+    <link href="http://www.linzhe.me/2016/11/05/20161105-logistic-regression/"/>
+    <id>http://www.linzhe.me/2016/11/05/20161105-logistic-regression/</id>
+    <published>2016-11-04T23:57:49.000Z</published>
+    <updated>2016-11-26T09:28:42.000Z</updated>
+    
+    <content type="html">&lt;h2 id=&quot;0-介绍&quot;&gt;&lt;a href=&quot;#0-介绍&quot; class=&quot;headerlink&quot; title=&quot;0. 介绍&quot;&gt;&lt;/a&gt;0. 介绍&lt;/h2&gt;&lt;p&gt;因为其实现简单分类时计算量非常小，速度很快，存储资源低而被广泛的应用在诸如广告、推荐系统中，可以说逻辑回归是应用最广泛的分类算法之一，原因大概有以下几个方面：&lt;br&gt;— LR模型原理简单，易于实现并且效果还不错。&lt;br&gt;— 大量互联网公司中的广告和推荐系统大量使用了CTR预估模型，而LR则是CTR的基本算法。&lt;/p&gt;
+&lt;h2 id=&quot;1-线性二分类问题&quot;&gt;&lt;a href=&quot;#1-线性二分类问题&quot; class=&quot;headerlink&quot; title=&quot;1. 线性二分类问题&quot;&gt;&lt;/a&gt;1. 线性二分类问题&lt;/h2&gt;</content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;0-介绍&quot;&gt;&lt;a href=&quot;#0-介绍&quot; class=&quot;headerlink&quot; title=&quot;0. 介绍&quot;&gt;&lt;/a&gt;0. 介绍&lt;/h2&gt;&lt;p&gt;因为其实现简单分类时计算量非常小，速度很快，存储资源低而被广泛的应用在诸如广告、推荐系统中，可以说逻辑回归是应用最广泛的
+    
+    </summary>
+    
+      <category term="机器学习" scheme="http://www.linzhe.me/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"/>
+    
+    
+      <category term="机器学习" scheme="http://www.linzhe.me/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"/>
+    
+  </entry>
   
   <entry>
     <title>Spark MLlib 正则化</title>
