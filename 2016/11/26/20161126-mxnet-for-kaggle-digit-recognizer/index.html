@@ -68,7 +68,7 @@
 <link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="caffe,深度学习," />
+  <meta name="keywords" content="深度学习,mxnet," />
 
 
 
@@ -86,19 +86,22 @@
 
 
 
-<meta name="description" content="0. 关于Caffe昨天看到amazon将mxnet做的其深度深度算法的消息，突然觉得应该开始学习一些深度学习的知识了。本来想试试mxnet的，但是觉得还是先从caffe开始吧。caffe是深度学习在图像领域广泛使用的框架，有很多现在的model可以直接使用。
-1. 安装依赖使用brew安装依赖，首先更新一下brew，不然可能出现意想不到的各种错误。1/usr/bin/ruby -e &amp;quot;">
+<meta name="description" content="0. 编译mxnet上一篇讲了如何编译caffe，mxnet与caffe的依赖包大体相同，只需要将mxnet依赖有源码从github上全clone下来进行编译即可。
+12git clone --recursive https://github.com/dmlc/mxnetcd mxnet; cp make/osx.mk ./config.mk; make -j
+1. 应用使用mxnet的pytho">
 <meta property="og:type" content="article">
-<meta property="og:title" content="mac安装caffe过程">
-<meta property="og:url" content="http://www.linzhe.me/2016/11/26/20161126-install-caffe-on-mac/index.html">
+<meta property="og:title" content="使用mxnet进行kaggle竞赛digit recognizer">
+<meta property="og:url" content="http://www.linzhe.me/2016/11/26/20161126-mxnet-for-kaggle-digit-recognizer/index.html">
 <meta property="og:site_name" content="LinZhe's Notes">
-<meta property="og:description" content="0. 关于Caffe昨天看到amazon将mxnet做的其深度深度算法的消息，突然觉得应该开始学习一些深度学习的知识了。本来想试试mxnet的，但是觉得还是先从caffe开始吧。caffe是深度学习在图像领域广泛使用的框架，有很多现在的model可以直接使用。
-1. 安装依赖使用brew安装依赖，首先更新一下brew，不然可能出现意想不到的各种错误。1/usr/bin/ruby -e &amp;quot;">
-<meta property="og:updated_time" content="2016-11-26T09:28:06.000Z">
+<meta property="og:description" content="0. 编译mxnet上一篇讲了如何编译caffe，mxnet与caffe的依赖包大体相同，只需要将mxnet依赖有源码从github上全clone下来进行编译即可。
+12git clone --recursive https://github.com/dmlc/mxnetcd mxnet; cp make/osx.mk ./config.mk; make -j
+1. 应用使用mxnet的pytho">
+<meta property="og:updated_time" content="2016-12-03T09:15:27.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="mac安装caffe过程">
-<meta name="twitter:description" content="0. 关于Caffe昨天看到amazon将mxnet做的其深度深度算法的消息，突然觉得应该开始学习一些深度学习的知识了。本来想试试mxnet的，但是觉得还是先从caffe开始吧。caffe是深度学习在图像领域广泛使用的框架，有很多现在的model可以直接使用。
-1. 安装依赖使用brew安装依赖，首先更新一下brew，不然可能出现意想不到的各种错误。1/usr/bin/ruby -e &amp;quot;">
+<meta name="twitter:title" content="使用mxnet进行kaggle竞赛digit recognizer">
+<meta name="twitter:description" content="0. 编译mxnet上一篇讲了如何编译caffe，mxnet与caffe的依赖包大体相同，只需要将mxnet依赖有源码从github上全clone下来进行编译即可。
+12git clone --recursive https://github.com/dmlc/mxnetcd mxnet; cp make/osx.mk ./config.mk; make -j
+1. 应用使用mxnet的pytho">
 
 
 
@@ -119,9 +122,9 @@
 
 
 
-  <link rel="canonical" href="http://www.linzhe.me/2016/11/26/20161126-install-caffe-on-mac/"/>
+  <link rel="canonical" href="http://www.linzhe.me/2016/11/26/20161126-mxnet-for-kaggle-digit-recognizer/"/>
 
-  <title> mac安装caffe过程 | LinZhe's Notes </title>
+  <title> 使用mxnet进行kaggle竞赛digit recognizer | LinZhe's Notes </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -271,7 +274,7 @@
             
             
               
-                mac安装caffe过程
+                使用mxnet进行kaggle竞赛digit recognizer
               
             
           </h1>
@@ -283,7 +286,7 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-11-26T13:51:29+08:00" content="2016-11-26">
+            <time itemprop="dateCreated" datetime="2016-11-26T21:38:48+08:00" content="2016-11-26">
               2016-11-26
             </time>
           </span>
@@ -313,8 +316,8 @@
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2016/11/26/20161126-install-caffe-on-mac/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/11/26/20161126-install-caffe-on-mac/" itemprop="commentsCount"></span>
+                <a href="/2016/11/26/20161126-mxnet-for-kaggle-digit-recognizer/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/11/26/20161126-mxnet-for-kaggle-digit-recognizer/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -324,7 +327,7 @@
 
           
           
-             <span id="/2016/11/26/20161126-install-caffe-on-mac/" class="leancloud_visitors" data-flag-title="mac安装caffe过程">
+             <span id="/2016/11/26/20161126-mxnet-for-kaggle-digit-recognizer/" class="leancloud_visitors" data-flag-title="使用mxnet进行kaggle竞赛digit recognizer">
                &nbsp; | &nbsp;
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -346,16 +349,12 @@
       
 
       
-        <h1 id="0-关于Caffe"><a href="#0-关于Caffe" class="headerlink" title="0. 关于Caffe"></a>0. 关于Caffe</h1><p>昨天看到amazon将mxnet做的其深度深度算法的消息，突然觉得应该开始学习一些深度学习的知识了。<br>本来想试试mxnet的，但是觉得还是先从caffe开始吧。caffe是深度学习在图像领域广泛使用的框架，有很多现在的model可以直接使用。</p>
-<h1 id="1-安装依赖"><a href="#1-安装依赖" class="headerlink" title="1. 安装依赖"></a>1. 安装依赖</h1><p>使用brew安装依赖，首先更新一下brew，不然可能出现意想不到的各种错误。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/usr/bin/ruby -e &quot;$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)&quot;</div></pre></td></tr></table></figure></p>
-<p>然后安装依赖</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">brew install -vd snappy leveldb gflags glog szip lmdb</div><div class="line">brew tap homebrew/science</div><div class="line">brew install hdf5 opencv protobuf boost</div></pre></td></tr></table></figure>
-<h1 id="2-编译"><a href="#2-编译" class="headerlink" title="2. 编译"></a>2. 编译</h1><p>下载caffe源码</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">git clone https://github.com/bvlc/caffe.git</div><div class="line">cd caffe</div><div class="line">cp Makefile.config.example Makefile.config</div></pre></td></tr></table></figure>
-<p>修改编译模式开关</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">CPU_ONLY := 1</div></pre></td></tr></table></figure>
-<p>编译<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">make -j</div></pre></td></tr></table></figure></p>
-<p>编译完成，可以开始动手运行例子了！</p>
+        <h1 id="0-编译mxnet"><a href="#0-编译mxnet" class="headerlink" title="0. 编译mxnet"></a>0. 编译mxnet</h1><p>上一篇讲了如何编译caffe，mxnet与caffe的依赖包大体相同，只需要将mxnet依赖有源码从github上全clone下来进行编译即可。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">git clone --recursive https://github.com/dmlc/mxnet</div><div class="line">cd mxnet; cp make/osx.mk ./config.mk; make -j</div></pre></td></tr></table></figure>
+<h1 id="1-应用"><a href="#1-应用" class="headerlink" title="1. 应用"></a>1. 应用</h1><p>使用mxnet的python api，快速开发一个应用算法。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</div><div class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</div><div class="line"><span class="keyword">import</span> mxnet <span class="keyword">as</span> mx</div><div class="line"><span class="keyword">import</span> logging</div><div class="line"></div><div class="line">VALIDATION_SIZE = <span class="number">2000</span></div><div class="line"></div><div class="line">dataset = pd.read_csv(<span class="string">"../input/train.csv"</span>)</div><div class="line">target = dataset[[<span class="number">0</span>]].values.ravel()</div><div class="line">train = dataset.iloc[:,<span class="number">1</span>:].values</div><div class="line"></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_lenet</span><span class="params">()</span>:</span></div><div class="line">    data = mx.symbol.Variable(<span class="string">'data'</span>)</div><div class="line">    <span class="comment"># first conv</span></div><div class="line">    conv1 = mx.symbol.Convolution(data=data, kernel=(<span class="number">5</span>,<span class="number">5</span>), num_filter=<span class="number">20</span>)</div><div class="line">    tanh1 = mx.symbol.Activation(data=conv1, act_type=<span class="string">"tanh"</span>)</div><div class="line">    pool1 = mx.symbol.Pooling(data=tanh1, pool_type=<span class="string">"max"</span>,</div><div class="line">                              kernel=(<span class="number">2</span>,<span class="number">2</span>), stride=(<span class="number">2</span>,<span class="number">2</span>))</div><div class="line">    <span class="comment"># second conv</span></div><div class="line">    conv2 = mx.symbol.Convolution(data=pool1, kernel=(<span class="number">5</span>,<span class="number">5</span>), num_filter=<span class="number">50</span>)</div><div class="line">    tanh2 = mx.symbol.Activation(data=conv2, act_type=<span class="string">"tanh"</span>)</div><div class="line">    pool2 = mx.symbol.Pooling(data=tanh2, pool_type=<span class="string">"max"</span>,</div><div class="line">                              kernel=(<span class="number">2</span>,<span class="number">2</span>), stride=(<span class="number">2</span>,<span class="number">2</span>))</div><div class="line">    <span class="comment"># first fullc</span></div><div class="line">    flatten = mx.symbol.Flatten(data=pool2)</div><div class="line">    fc1 = mx.symbol.FullyConnected(data=flatten, num_hidden=<span class="number">500</span>)</div><div class="line">    tanh3 = mx.symbol.Activation(data=fc1, act_type=<span class="string">"tanh"</span>)</div><div class="line">    <span class="comment"># second fullc</span></div><div class="line">    fc2 = mx.symbol.FullyConnected(data=tanh3, num_hidden=<span class="number">10</span>)</div><div class="line">    <span class="comment"># loss</span></div><div class="line">    lenet = mx.symbol.SoftmaxOutput(data=fc2, name=<span class="string">'softmax'</span>)</div><div class="line">    <span class="keyword">return</span> lenet</div><div class="line"></div><div class="line">val_data = train[:VALIDATION_SIZE].astype(<span class="string">'float32'</span>)</div><div class="line">val_label = target[:VALIDATION_SIZE]</div><div class="line">train_data = train[VALIDATION_SIZE: , :].astype(<span class="string">'float32'</span>)</div><div class="line">train_label = target[VALIDATION_SIZE:]</div><div class="line">train_data = np.array(train_data).reshape((<span class="number">-1</span>, <span class="number">1</span>, <span class="number">28</span>, <span class="number">28</span>))</div><div class="line">val_data = np.array(val_data).reshape((<span class="number">-1</span>, <span class="number">1</span>, <span class="number">28</span>, <span class="number">28</span>))</div><div class="line"></div><div class="line">train_data[:] /= <span class="number">256.0</span></div><div class="line">val_data[:]/= <span class="number">256.0</span></div><div class="line"></div><div class="line">batch_size = <span class="number">500</span></div><div class="line">train_iter = mx.io.NDArrayIter(train_data, train_label, batch_size=batch_size, shuffle=<span class="keyword">True</span>)</div><div class="line">val_iter = mx.io.NDArrayIter(val_data, val_label, batch_size=batch_size)</div><div class="line"></div><div class="line"><span class="comment"># logging</span></div><div class="line">head = <span class="string">'%(asctime)-15s Node[0] %(message)s'</span></div><div class="line">logging.basicConfig(level=logging.DEBUG, format=head)</div><div class="line"></div><div class="line"><span class="comment"># create model</span></div><div class="line">devs = mx.gpu(<span class="number">0</span>)</div><div class="line">network=get_lenet()</div><div class="line">model = mx.model.FeedForward(</div><div class="line">        <span class="comment">#ctx                = devs,</span></div><div class="line">        symbol             = network,</div><div class="line">        num_epoch          = <span class="number">4</span>,</div><div class="line">        learning_rate      = <span class="number">0.1</span>,</div><div class="line">        momentum           = <span class="number">0.9</span>,</div><div class="line">        wd                 = <span class="number">0.00001</span>,</div><div class="line">        initializer        = mx.init.Xavier(factor_type=<span class="string">"in"</span>, magnitude=<span class="number">2.34</span>)</div><div class="line">        )</div><div class="line"></div><div class="line">eval_metrics = [<span class="string">'accuracy'</span>]</div><div class="line">model.fit(</div><div class="line">	X=train_iter,</div><div class="line">	eval_metric        = eval_metrics,</div><div class="line">	eval_data	 = val_iter</div><div class="line">	)</div><div class="line"></div><div class="line"><span class="comment">#predict</span></div><div class="line">test = pd.read_csv(<span class="string">"../input/test.csv"</span>).values</div><div class="line">test_data = test.astype(<span class="string">'float32'</span>)</div><div class="line">test_data = np.array(test_data).reshape((<span class="number">-1</span>, <span class="number">1</span>, <span class="number">28</span>, <span class="number">28</span>))</div><div class="line">test_data[:]/= <span class="number">256.0</span></div><div class="line">test_iter = mx.io.NDArrayIter(test_data, batch_size=batch_size)</div><div class="line"></div><div class="line">pred = model.predict(X = test_iter)</div><div class="line">pred = np.argsort(pred)</div><div class="line">np.savetxt(<span class="string">'submission_lenet.csv'</span>, np.c_[range(<span class="number">1</span>,len(test)+<span class="number">1</span>),pred[:,<span class="number">9</span>]], delimiter=<span class="string">','</span>, header = <span class="string">'ImageId,Label'</span>, comments = <span class="string">''</span>, fmt=<span class="string">'%d'</span>)</div></pre></td></tr></table></figure>
+<h1 id="结果"><a href="#结果" class="headerlink" title="结果"></a>结果</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">2016-11-26 21:19:07,577 Node[0] Start training with [cpu(0)]</div><div class="line">2016-11-26 21:21:21,802 Node[0] Epoch[0] Resetting Data Iterator</div><div class="line">2016-11-26 21:21:21,802 Node[0] Epoch[0] Time cost=134.220</div><div class="line">2016-11-26 21:21:24,613 Node[0] Epoch[0] Validation-accuracy=0.974000</div><div class="line">2016-11-26 21:23:36,314 Node[0] Epoch[1] Resetting Data Iterator</div><div class="line">2016-11-26 21:23:36,314 Node[0] Epoch[1] Time cost=131.700</div><div class="line">2016-11-26 21:23:38,900 Node[0] Epoch[1] Validation-accuracy=0.988000</div><div class="line">2016-11-26 21:25:48,668 Node[0] Epoch[2] Resetting Data Iterator</div><div class="line">2016-11-26 21:25:48,669 Node[0] Epoch[2] Time cost=129.769</div><div class="line">2016-11-26 21:25:51,246 Node[0] Epoch[2] Validation-accuracy=0.987500</div><div class="line">2016-11-26 21:28:01,337 Node[0] Epoch[3] Resetting Data Iterator</div><div class="line">2016-11-26 21:28:01,337 Node[0] Epoch[3] Time cost=130.091</div><div class="line">2016-11-26 21:28:03,945 Node[0] Epoch[3] Validation-accuracy=0.988000</div></pre></td></tr></table></figure>
+<p>提交的准确率为0.98571</p>
 
       
     </div>
@@ -378,9 +377,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/caffe/" rel="tag">#caffe</a>
-          
             <a href="/tags/深度学习/" rel="tag">#深度学习</a>
+          
+            <a href="/tags/mxnet/" rel="tag">#mxnet</a>
           
         </div>
       
@@ -389,17 +388,13 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2016/11/05/20161105-logistic-regression/" rel="next" title="机器学习基础系列：Logistic Regression">
-                <i class="fa fa-chevron-left"></i> 机器学习基础系列：Logistic Regression
+              <a href="/2016/11/26/20161126-install-caffe-on-mac/" rel="next" title="mac安装caffe过程">
+                <i class="fa fa-chevron-left"></i> mac安装caffe过程
               </a>
             
           </div>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2016/11/26/20161126-mxnet-for-kaggle-digit-recognizer/" rel="prev" title="使用mxnet进行kaggle竞赛digit recognizer">
-                使用mxnet进行kaggle竞赛digit recognizer <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -425,8 +420,8 @@
           
   <div class="comments" id="comments">
     
-      <div class="ds-thread" data-thread-key="2016/11/26/20161126-install-caffe-on-mac/"
-           data-title="mac安装caffe过程" data-url="http://www.linzhe.me/2016/11/26/20161126-install-caffe-on-mac/">
+      <div class="ds-thread" data-thread-key="2016/11/26/20161126-mxnet-for-kaggle-digit-recognizer/"
+           data-title="使用mxnet进行kaggle竞赛digit recognizer" data-url="http://www.linzhe.me/2016/11/26/20161126-mxnet-for-kaggle-digit-recognizer/">
       </div>
     
   </div>
@@ -535,7 +530,7 @@
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#0-关于Caffe"><span class="nav-number">1.</span> <span class="nav-text">0. 关于Caffe</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#1-安装依赖"><span class="nav-number">2.</span> <span class="nav-text">1. 安装依赖</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-编译"><span class="nav-number">3.</span> <span class="nav-text">2. 编译</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#0-编译mxnet"><span class="nav-number">1.</span> <span class="nav-text">0. 编译mxnet</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#1-应用"><span class="nav-number">2.</span> <span class="nav-text">1. 应用</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#结果"><span class="nav-number">3.</span> <span class="nav-text">结果</span></a></li></ol></div>
             
           </div>
         </section>
