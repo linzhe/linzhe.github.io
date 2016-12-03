@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.linzhe.me/"/>
-  <updated>2016-12-03T09:15:27.000Z</updated>
+  <updated>2016-12-03T10:50:23.000Z</updated>
   <id>http://www.linzhe.me/</id>
   
   <author>
@@ -14,6 +14,41 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>机器学习基础系列：Logistic Regression</title>
+    <link href="http://www.linzhe.me/2016/12/03/20161203-word2vec-usage-in-recommendation-system/"/>
+    <id>http://www.linzhe.me/2016/12/03/20161203-word2vec-usage-in-recommendation-system/</id>
+    <published>2016-12-03T09:07:49.000Z</published>
+    <updated>2016-12-03T10:50:23.000Z</updated>
+    
+    <content type="html">&lt;h1 id=&quot;0-词向量&quot;&gt;&lt;a href=&quot;#0-词向量&quot; class=&quot;headerlink&quot; title=&quot;0 词向量&quot;&gt;&lt;/a&gt;0 词向量&lt;/h1&gt;&lt;p&gt;自然语言理解的问题要转化为机器学习的问题，第一步就是要找一种方法把这些符号数学化。&lt;br&gt;最直观最常用的词表示方法是 One-hot Representation，这种方法把每个词表示为一个很长的向量。这个向量的维度是词表大小，其中绝大多数元素为 0，只有一个维度的值为 1，这个维度就代表了当前的词。&lt;/p&gt;
+&lt;p&gt;“话筒”表示为 [0 0 0 &lt;strong&gt;1&lt;/strong&gt; 0 0 0 0 0 0 0 0 0 0 0 0 …]&lt;br&gt;“麦克”表示为 [0 0 0 0 0 0 0 0 &lt;strong&gt;1&lt;/strong&gt; 0 0 0 0 0 0 0 …]&lt;/p&gt;
+&lt;p&gt;这种表示方法存在一个重要的问题就是“词汇鸿沟”现象：任意两个词之间都是孤立的。光从这两个向量中看不出两个词是否有关系，哪怕是话筒和麦克这样的同义词也不能幸免于难。&lt;br&gt;于是，为了处理这个问题，Hinton早在1986年就提出了Distributed Representation 的表示方式。向量一般长成这个样子：[0.792, −0.177, −0.107, 0.109, −0.542, …]。维度以 50 维和 100 维比较常见。&lt;/p&gt;
+&lt;h1 id=&quot;1-词向量的训练&quot;&gt;&lt;a href=&quot;#1-词向量的训练&quot; class=&quot;headerlink&quot; title=&quot;1 词向量的训练&quot;&gt;&lt;/a&gt;1 词向量的训练&lt;/h1&gt;&lt;p&gt;一个词要表示成上述一个向量是要经过一番训练的，训练方法较多，word2vec是其中一种。word2vec是google开源的做词嵌入（word embedding）的开源工具。&lt;br&gt;简单的说，它在给定的语料库上训练一个模型，然后会输出所有出现在语料库上的单词的向量表示，这个向量称为”word embedding”。&lt;br&gt;基于这个向量表示，可以计算词与词之间的关系，例如相似性(同义词等)，语义关联性（中国 - 北京 = 英国 - 伦敦），还可以进行词的聚类等。&lt;/p&gt;
+&lt;h2 id=&quot;1-1-word2vec使用&quot;&gt;&lt;a href=&quot;#1-1-word2vec使用&quot; class=&quot;headerlink&quot; title=&quot;1.1 word2vec使用&quot;&gt;&lt;/a&gt;1.1 word2vec使用&lt;/h2&gt;&lt;p&gt;&lt;a href=&quot;https://code.google.com/archive/p/word2vec/source/default/source&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;下载源码&lt;/a&gt;&lt;br&gt;make编译后可以得到几个可执行文件，运行demo-word.sh，下载demo数据并进行训练。&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;./word2vec -train text8 -output vectors.bin -cbow 1 -size 200 -window 8 -negative 25 -hs 0 -sample 1e-4 -threads 20 -binary 1 -iter 15&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;生成结果文件vectors.bin 中，运行&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;./distance vectors.bin&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;输入词，返回相似的词以及相似度。&lt;/p&gt;
+&lt;h1 id=&quot;3-词向量的应用&quot;&gt;&lt;a href=&quot;#3-词向量的应用&quot; class=&quot;headerlink&quot; title=&quot;3 词向量的应用&quot;&gt;&lt;/a&gt;3 词向量的应用&lt;/h1&gt;&lt;p&gt;词向量的表示，可以类比到工业应用上许多场景，可以很好的解决相似度、聚类等相关问题。&lt;/p&gt;
+&lt;h2 id=&quot;3-1-社交网络推荐&quot;&gt;&lt;a href=&quot;#3-1-社交网络推荐&quot; class=&quot;headerlink&quot; title=&quot;3.1 社交网络推荐&quot;&gt;&lt;/a&gt;3.1 社交网络推荐&lt;/h2&gt;&lt;p&gt;word2vec中两个词的相似度可以直接通过余弦等相似度算法来衡量，可以将doc和word定义为&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;doc  -&amp;gt; 根据每一个用户关注用户的顺序，生成doc&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;word -&amp;gt; 被关注的用户&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;由于用户量很大，可以适当的清洗掉一些将关注数比较少的或者太多的doc。&lt;/p&gt;
+&lt;h2 id=&quot;3-2-计算item的相似度&quot;&gt;&lt;a href=&quot;#3-2-计算item的相似度&quot; class=&quot;headerlink&quot; title=&quot;3.2 计算item的相似度&quot;&gt;&lt;/a&gt;3.2 计算item的相似度&lt;/h2&gt;&lt;p&gt;在App推荐的场景中，根据浏览/收藏/下载/安装等行为，可以将app看做词，将每一个用户看做一个文档，通过word2vec将其训练为一个向量。&lt;br&gt;视频推荐场景下同样可行。同样的，可以推广到计算广告中，根据用户的点击广告的点击序列，将每一个广告变为一个向量。&lt;/p&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;0-词向量&quot;&gt;&lt;a href=&quot;#0-词向量&quot; class=&quot;headerlink&quot; title=&quot;0 词向量&quot;&gt;&lt;/a&gt;0 词向量&lt;/h1&gt;&lt;p&gt;自然语言理解的问题要转化为机器学习的问题，第一步就是要找一种方法把这些符号数学化。&lt;br&gt;最直观最常用的词表示方法是
+    
+    </summary>
+    
+      <category term="机器学习" scheme="http://www.linzhe.me/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"/>
+    
+    
+      <category term="机器学习" scheme="http://www.linzhe.me/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"/>
+    
+  </entry>
   
   <entry>
     <title>使用mxnet进行kaggle竞赛digit recognizer</title>
@@ -73,9 +108,9 @@
       <category term="深度学习" scheme="http://www.linzhe.me/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"/>
     
     
-      <category term="caffe" scheme="http://www.linzhe.me/tags/caffe/"/>
-    
       <category term="深度学习" scheme="http://www.linzhe.me/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"/>
+    
+      <category term="caffe" scheme="http://www.linzhe.me/tags/caffe/"/>
     
   </entry>
   

@@ -68,7 +68,7 @@
 <link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="推荐系统," />
+  <meta name="keywords" content="机器学习," />
 
 
 
@@ -86,49 +86,19 @@
 
 
 
-<meta name="description" content="爬虫
-正文抽取
-主题抽取
-
-推荐引擎
-tag rank
-协同过滤
-user profile
-
-客户端
-iOS
-Android">
+<meta name="description" content="0 词向量自然语言理解的问题要转化为机器学习的问题，第一步就是要找一种方法把这些符号数学化。最直观最常用的词表示方法是 One-hot Representation，这种方法把每个词表示为一个很长的向量。这个向量的维度是词表大小，其中绝大多数元素为 0，只有一个维度的值为 1，这个维度就代表了当前的词。
+“话筒”表示为 [0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 …]“麦克”">
 <meta property="og:type" content="article">
-<meta property="og:title" content="微信推荐系统">
-<meta property="og:url" content="http://www.linzhe.me/2016/07/10/build-recommendtion-system/index.html">
+<meta property="og:title" content="机器学习基础系列：Logistic Regression">
+<meta property="og:url" content="http://www.linzhe.me/2016/12/03/20161203-word2vec-usage-in-recommendation-system/index.html">
 <meta property="og:site_name" content="LinZhe's Notes">
-<meta property="og:description" content="爬虫
-正文抽取
-主题抽取
-
-推荐引擎
-tag rank
-协同过滤
-user profile
-
-客户端
-iOS
-Android">
-<meta property="og:updated_time" content="2016-08-05T14:19:37.000Z">
+<meta property="og:description" content="0 词向量自然语言理解的问题要转化为机器学习的问题，第一步就是要找一种方法把这些符号数学化。最直观最常用的词表示方法是 One-hot Representation，这种方法把每个词表示为一个很长的向量。这个向量的维度是词表大小，其中绝大多数元素为 0，只有一个维度的值为 1，这个维度就代表了当前的词。
+“话筒”表示为 [0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 …]“麦克”">
+<meta property="og:updated_time" content="2016-12-03T10:50:23.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="微信推荐系统">
-<meta name="twitter:description" content="爬虫
-正文抽取
-主题抽取
-
-推荐引擎
-tag rank
-协同过滤
-user profile
-
-客户端
-iOS
-Android">
+<meta name="twitter:title" content="机器学习基础系列：Logistic Regression">
+<meta name="twitter:description" content="0 词向量自然语言理解的问题要转化为机器学习的问题，第一步就是要找一种方法把这些符号数学化。最直观最常用的词表示方法是 One-hot Representation，这种方法把每个词表示为一个很长的向量。这个向量的维度是词表大小，其中绝大多数元素为 0，只有一个维度的值为 1，这个维度就代表了当前的词。
+“话筒”表示为 [0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 …]“麦克”">
 
 
 
@@ -149,9 +119,9 @@ Android">
 
 
 
-  <link rel="canonical" href="http://www.linzhe.me/2016/07/10/build-recommendtion-system/"/>
+  <link rel="canonical" href="http://www.linzhe.me/2016/12/03/20161203-word2vec-usage-in-recommendation-system/"/>
 
-  <title> 微信推荐系统 | LinZhe's Notes </title>
+  <title> 机器学习基础系列：Logistic Regression | LinZhe's Notes </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -301,7 +271,7 @@ Android">
             
             
               
-                微信推荐系统
+                机器学习基础系列：Logistic Regression
               
             
           </h1>
@@ -313,8 +283,8 @@ Android">
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-07-10T10:31:00+08:00" content="2016-07-10">
-              2016-07-10
+            <time itemprop="dateCreated" datetime="2016-12-03T17:07:49+08:00" content="2016-12-03">
+              2016-12-03
             </time>
           </span>
 
@@ -327,8 +297,8 @@ Android">
               <span class="post-meta-item-text">分类于</span>
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/github/" itemprop="url" rel="index">
-                    <span itemprop="name">github</span>
+                  <a href="/categories/机器学习/" itemprop="url" rel="index">
+                    <span itemprop="name">机器学习</span>
                   </a>
                 </span>
 
@@ -343,8 +313,8 @@ Android">
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2016/07/10/build-recommendtion-system/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/07/10/build-recommendtion-system/" itemprop="commentsCount"></span>
+                <a href="/2016/12/03/20161203-word2vec-usage-in-recommendation-system/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/12/03/20161203-word2vec-usage-in-recommendation-system/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -354,7 +324,7 @@ Android">
 
           
           
-             <span id="/2016/07/10/build-recommendtion-system/" class="leancloud_visitors" data-flag-title="微信推荐系统">
+             <span id="/2016/12/03/20161203-word2vec-usage-in-recommendation-system/" class="leancloud_visitors" data-flag-title="机器学习基础系列：Logistic Regression">
                &nbsp; | &nbsp;
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -376,19 +346,19 @@ Android">
       
 
       
-        <h3 id="爬虫"><a href="#爬虫" class="headerlink" title="爬虫"></a>爬虫</h3><ol>
-<li>正文抽取</li>
-<li>主题抽取</li>
-</ol>
-<h3 id="推荐引擎"><a href="#推荐引擎" class="headerlink" title="推荐引擎"></a>推荐引擎</h3><ol>
-<li>tag rank</li>
-<li>协同过滤</li>
-<li>user profile</li>
-</ol>
-<h3 id="客户端"><a href="#客户端" class="headerlink" title="客户端"></a>客户端</h3><ol>
-<li>iOS</li>
-<li>Android</li>
-</ol>
+        <h1 id="0-词向量"><a href="#0-词向量" class="headerlink" title="0 词向量"></a>0 词向量</h1><p>自然语言理解的问题要转化为机器学习的问题，第一步就是要找一种方法把这些符号数学化。<br>最直观最常用的词表示方法是 One-hot Representation，这种方法把每个词表示为一个很长的向量。这个向量的维度是词表大小，其中绝大多数元素为 0，只有一个维度的值为 1，这个维度就代表了当前的词。</p>
+<p>“话筒”表示为 [0 0 0 <strong>1</strong> 0 0 0 0 0 0 0 0 0 0 0 0 …]<br>“麦克”表示为 [0 0 0 0 0 0 0 0 <strong>1</strong> 0 0 0 0 0 0 0 …]</p>
+<p>这种表示方法存在一个重要的问题就是“词汇鸿沟”现象：任意两个词之间都是孤立的。光从这两个向量中看不出两个词是否有关系，哪怕是话筒和麦克这样的同义词也不能幸免于难。<br>于是，为了处理这个问题，Hinton早在1986年就提出了Distributed Representation 的表示方式。向量一般长成这个样子：[0.792, −0.177, −0.107, 0.109, −0.542, …]。维度以 50 维和 100 维比较常见。</p>
+<h1 id="1-词向量的训练"><a href="#1-词向量的训练" class="headerlink" title="1 词向量的训练"></a>1 词向量的训练</h1><p>一个词要表示成上述一个向量是要经过一番训练的，训练方法较多，word2vec是其中一种。word2vec是google开源的做词嵌入（word embedding）的开源工具。<br>简单的说，它在给定的语料库上训练一个模型，然后会输出所有出现在语料库上的单词的向量表示，这个向量称为”word embedding”。<br>基于这个向量表示，可以计算词与词之间的关系，例如相似性(同义词等)，语义关联性（中国 - 北京 = 英国 - 伦敦），还可以进行词的聚类等。</p>
+<h2 id="1-1-word2vec使用"><a href="#1-1-word2vec使用" class="headerlink" title="1.1 word2vec使用"></a>1.1 word2vec使用</h2><p><a href="https://code.google.com/archive/p/word2vec/source/default/source" target="_blank" rel="external">下载源码</a><br>make编译后可以得到几个可执行文件，运行demo-word.sh，下载demo数据并进行训练。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">./word2vec -train text8 -output vectors.bin -cbow 1 -size 200 -window 8 -negative 25 -hs 0 -sample 1e-4 -threads 20 -binary 1 -iter 15</div></pre></td></tr></table></figure>
+<p>生成结果文件vectors.bin 中，运行<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">./distance vectors.bin</div></pre></td></tr></table></figure></p>
+<p>输入词，返回相似的词以及相似度。</p>
+<h1 id="3-词向量的应用"><a href="#3-词向量的应用" class="headerlink" title="3 词向量的应用"></a>3 词向量的应用</h1><p>词向量的表示，可以类比到工业应用上许多场景，可以很好的解决相似度、聚类等相关问题。</p>
+<h2 id="3-1-社交网络推荐"><a href="#3-1-社交网络推荐" class="headerlink" title="3.1 社交网络推荐"></a>3.1 社交网络推荐</h2><p>word2vec中两个词的相似度可以直接通过余弦等相似度算法来衡量，可以将doc和word定义为</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">doc  -&gt; 根据每一个用户关注用户的顺序，生成doc</div><div class="line">word -&gt; 被关注的用户</div></pre></td></tr></table></figure>
+<p>由于用户量很大，可以适当的清洗掉一些将关注数比较少的或者太多的doc。</p>
+<h2 id="3-2-计算item的相似度"><a href="#3-2-计算item的相似度" class="headerlink" title="3.2 计算item的相似度"></a>3.2 计算item的相似度</h2><p>在App推荐的场景中，根据浏览/收藏/下载/安装等行为，可以将app看做词，将每一个用户看做一个文档，通过word2vec将其训练为一个向量。<br>视频推荐场景下同样可行。同样的，可以推广到计算广告中，根据用户的点击广告的点击序列，将每一个广告变为一个向量。</p>
 
       
     </div>
@@ -411,7 +381,7 @@ Android">
       
         <div class="post-tags">
           
-            <a href="/tags/推荐系统/" rel="tag">#推荐系统</a>
+            <a href="/tags/机器学习/" rel="tag">#机器学习</a>
           
         </div>
       
@@ -420,17 +390,13 @@ Android">
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2016/07/10/Setting-up-a-Github-Pages-blog-with-Hexo/" rel="next" title="Setting up a Github Pages blog with Hexo">
-                <i class="fa fa-chevron-left"></i> Setting up a Github Pages blog with Hexo
+              <a href="/2016/11/26/20161126-mxnet-for-kaggle-digit-recognizer/" rel="next" title="使用mxnet进行kaggle竞赛digit recognizer">
+                <i class="fa fa-chevron-left"></i> 使用mxnet进行kaggle竞赛digit recognizer
               </a>
             
           </div>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2016/07/14/cache-server-start-up/" rel="prev" title="cache server： 冷热数据切换">
-                cache server： 冷热数据切换 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -456,8 +422,8 @@ Android">
           
   <div class="comments" id="comments">
     
-      <div class="ds-thread" data-thread-key="2016/07/10/build-recommendtion-system/"
-           data-title="微信推荐系统" data-url="http://www.linzhe.me/2016/07/10/build-recommendtion-system/">
+      <div class="ds-thread" data-thread-key="2016/12/03/20161203-word2vec-usage-in-recommendation-system/"
+           data-title="机器学习基础系列：Logistic Regression" data-url="http://www.linzhe.me/2016/12/03/20161203-word2vec-usage-in-recommendation-system/">
       </div>
     
   </div>
@@ -566,7 +532,7 @@ Android">
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#爬虫"><span class="nav-number">1.</span> <span class="nav-text">爬虫</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#推荐引擎"><span class="nav-number">2.</span> <span class="nav-text">推荐引擎</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#客户端"><span class="nav-number">3.</span> <span class="nav-text">客户端</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#0-词向量"><span class="nav-number">1.</span> <span class="nav-text">0 词向量</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#1-词向量的训练"><span class="nav-number">2.</span> <span class="nav-text">1 词向量的训练</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-word2vec使用"><span class="nav-number">2.1.</span> <span class="nav-text">1.1 word2vec使用</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-词向量的应用"><span class="nav-number">3.</span> <span class="nav-text">3 词向量的应用</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#3-1-社交网络推荐"><span class="nav-number">3.1.</span> <span class="nav-text">3.1 社交网络推荐</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-2-计算item的相似度"><span class="nav-number">3.2.</span> <span class="nav-text">3.2 计算item的相似度</span></a></li></ol></li></ol></div>
             
           </div>
         </section>
