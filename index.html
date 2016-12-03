@@ -5,10 +5,10 @@
   
 
 
-<html class="theme-next pisces use-motion">
+<html class="theme-next pisces use-motion" lang="zh-Hans">
 <head>
   <meta charset="UTF-8"/>
-<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
 
 
@@ -29,7 +29,7 @@
 
   
   
-  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
 
 
 
@@ -63,9 +63,9 @@
 
 
 
-<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
 
-<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
 
 
   <meta name="keywords" content="Hexo, NexT" />
@@ -79,7 +79,7 @@
 
 
 
-  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
 
 
 
@@ -98,24 +98,35 @@
 
 
 
-<script type="text/javascript" id="hexo.configuration">
+<script type="text/javascript" id="hexo.configurations">
   var NexT = window.NexT || {};
   var CONFIG = {
+    root: '/',
     scheme: 'Pisces',
     sidebar: {"position":"left","display":"post"},
     fancybox: true,
     motion: true,
     duoshuo: {
-      userId: 0,
+      userId: '0',
       author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
     }
   };
 </script>
 
 
 
-
   <link rel="canonical" href="http://www.linzhe.me/"/>
+
+
+
+
 
   <title> LinZhe's Notes </title>
 </head>
@@ -202,6 +213,16 @@
         </li>
       
         
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
         <li class="menu-item menu-item-archives">
           <a href="/archives" rel="section">
             
@@ -221,23 +242,51 @@
           </a>
         </li>
       
-        
-        <li class="menu-item menu-item-commonweal">
-          <a href="/404.html" rel="section">
+
+      
+        <li class="menu-item menu-item-search">
+          
             
-              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
             
-            公益404
+            搜索
           </a>
         </li>
-      
-
       
     </ul>
   
 
   
+    <div class="site-search">
+      
+  
+  <div class="algolia-popup popup">
+    <div class="algolia-search">
+      <div class="algolia-search-input-icon">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="algolia-search-input" id="algolia-search-input"></div>
+    </div>
+
+    <div class="algolia-results">
+      <div id="algolia-stats"></div>
+      <div id="algolia-hits"></div>
+      <div id="algolia-pagination" class="algolia-pagination"></div>
+    </div>
+
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+
+
+
+
+    </div>
+  
 </nav>
+
+
 
  </div>
     </header>
@@ -252,13 +301,26 @@
       
 
   
-  
 
   
   
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="http://www.linzhe.me/2016/12/03/20161203-word2vec-usage-in-recommendation-system/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="Zhe Lin">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="https://avatars2.githubusercontent.com/u/1837048">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="LinZhe's Notes">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="LinZhe's Notes" src="">
+    </span>
+  </span>
 
     
       <header class="post-header">
@@ -280,24 +342,30 @@
 
         <div class="post-meta">
           <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-12-03T17:07:49+08:00" content="2016-12-03">
-              2016-12-03
-            </time>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-12-03T17:07:49+08:00">
+                2016-12-03
+              </time>
+            
+
+            
+
+            
           </span>
 
           
             <span class="post-category" >
-              &nbsp; | &nbsp;
+              <span class="post-meta-divider">|</span>
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
               </span>
               <span class="post-meta-item-text">分类于</span>
               
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
                   <a href="/categories/机器学习/" itemprop="url" rel="index">
                     <span itemprop="name">机器学习</span>
                   </a>
@@ -305,7 +373,6 @@
 
                 
                 
-
               
             </span>
           
@@ -313,9 +380,9 @@
           
             
               <span class="post-comments-count">
-                &nbsp; | &nbsp;
+                <span class="post-meta-divider">|</span>
                 <a href="/2016/12/03/20161203-word2vec-usage-in-recommendation-system/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/12/03/20161203-word2vec-usage-in-recommendation-system/" itemprop="commentsCount"></span>
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/12/03/20161203-word2vec-usage-in-recommendation-system/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -326,7 +393,7 @@
           
           
              <span id="/2016/12/03/20161203-word2vec-usage-in-recommendation-system/" class="leancloud_visitors" data-flag-title="词向量应用">
-               &nbsp; | &nbsp;
+               <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
                </span>
@@ -336,6 +403,9 @@
           
 
           
+
+          
+
         </div>
       </header>
     
@@ -349,21 +419,15 @@
       
         
           
-            <h1 id="0-词向量"><a href="#0-词向量" class="headerlink" title="0 词向量"></a>0 词向量</h1><p>自然语言理解的问题要转化为机器学习的问题，第一步就是要找一种方法把这些符号数学化。<br>最直观最常用的词表示方法是 One-hot Representation，这种方法把每个词表示为一个很长的向量。这个向量的维度是词表大小，其中绝大多数元素为 0，只有一个维度的值为 1，这个维度就代表了当前的词。</p>
-<p>“话筒”表示为 [0 0 0 <strong>1</strong> 0 0 0 0 0 0 0 0 0 0 0 0 …]<br>“麦克”表示为 [0 0 0 0 0 0 0 0 <strong>1</strong> 0 0 0 0 0 0 0 …]</p>
-<p>这种表示方法存在一个重要的问题就是“词汇鸿沟”现象：任意两个词之间都是孤立的。光从这两个向量中看不出两个词是否有关系，哪怕是话筒和麦克这样的同义词也不能幸免于难。<br>于是，为了处理这个问题，Hinton早在1986年就提出了Distributed Representation 的表示方式。向量一般长成这个样子：[0.792, −0.177, −0.107, 0.109, −0.542, …]。维度以 50 维和 100 维比较常见。</p>
-<h1 id="1-词向量的训练"><a href="#1-词向量的训练" class="headerlink" title="1 词向量的训练"></a>1 词向量的训练</h1><p>一个词要表示成上述一个向量是要经过一番训练的，训练方法较多，word2vec是其中一种。word2vec是google开源的做词嵌入（word embedding）的开源工具。<br>简单的说，它在给定的语料库上训练一个模型，然后会输出所有出现在语料库上的单词的向量表示，这个向量称为”word embedding”。<br>基于这个向量表示，可以计算词与词之间的关系，例如相似性(同义词等)，语义关联性（中国 - 北京 = 英国 - 伦敦），还可以进行词的聚类等。</p>
-<h2 id="1-1-word2vec使用"><a href="#1-1-word2vec使用" class="headerlink" title="1.1 word2vec使用"></a>1.1 word2vec使用</h2><p><a href="https://code.google.com/archive/p/word2vec/source/default/source" target="_blank" rel="external">下载源码</a><br>make编译后可以得到几个可执行文件，运行demo-word.sh，下载demo数据并进行训练。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">./word2vec -train text8 -output vectors.bin -cbow 1 -size 200 -window 8 -negative 25 -hs 0 -sample 1e-4 -threads 20 -binary 1 -iter 15</div></pre></td></tr></table></figure>
-<p>生成结果文件vectors.bin 中，运行<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">./distance vectors.bin</div></pre></td></tr></table></figure></p>
-<p>输入词，返回相似的词以及相似度。</p>
-<h1 id="3-词向量的应用"><a href="#3-词向量的应用" class="headerlink" title="3 词向量的应用"></a>3 词向量的应用</h1><p>词向量的表示，可以类比到工业应用上许多场景，可以很好的解决相似度、聚类等相关问题。</p>
-<h2 id="3-1-社交网络推荐"><a href="#3-1-社交网络推荐" class="headerlink" title="3.1 社交网络推荐"></a>3.1 社交网络推荐</h2><p>word2vec中两个词的相似度可以直接通过余弦等相似度算法来衡量，可以将doc和word定义为</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">doc  -&gt; 根据每一个用户关注用户的顺序，生成doc</div><div class="line">word -&gt; 被关注的用户</div></pre></td></tr></table></figure>
-<p>由于用户量很大，可以适当的清洗掉一些将关注数比较少的或者太多的doc。</p>
-<h2 id="3-2-计算item的相似度"><a href="#3-2-计算item的相似度" class="headerlink" title="3.2 计算item的相似度"></a>3.2 计算item的相似度</h2><p>在App推荐的场景中，根据浏览/收藏/下载/安装等行为，可以将app看做词，将每一个用户看做一个文档，通过word2vec将其训练为一个向量。<br>视频推荐场景下同样可行。同样的，可以推广到计算广告中，根据用户的点击广告的点击序列，将每一个广告变为一个向量。</p>
-
-          
+          0 词向量自然语言理解的问题要转化为机器学习的问题，第一步就是要找一种方法把这些符号数学化。最直观最常用的词表示方法是 One-hot Representation，这种方法把每个词表示为一个很长的向量。这个向量的维度是词表大小，其中绝大多数元素为 0，只有一个维度的值为 1，这个维度就代表了当前的
+          ...
+          <!--noindex-->
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/12/03/20161203-word2vec-usage-in-recommendation-system/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -375,6 +439,7 @@
     <div>
       
     </div>
+
 
     <footer class="post-footer">
       
@@ -393,13 +458,26 @@
       
 
   
-  
 
   
   
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="http://www.linzhe.me/2016/11/26/20161126-mxnet-for-kaggle-digit-recognizer/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="Zhe Lin">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="https://avatars2.githubusercontent.com/u/1837048">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="LinZhe's Notes">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="LinZhe's Notes" src="">
+    </span>
+  </span>
 
     
       <header class="post-header">
@@ -421,24 +499,30 @@
 
         <div class="post-meta">
           <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-11-26T21:38:48+08:00" content="2016-11-26">
-              2016-11-26
-            </time>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-11-26T21:38:48+08:00">
+                2016-11-26
+              </time>
+            
+
+            
+
+            
           </span>
 
           
             <span class="post-category" >
-              &nbsp; | &nbsp;
+              <span class="post-meta-divider">|</span>
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
               </span>
               <span class="post-meta-item-text">分类于</span>
               
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
                   <a href="/categories/深度学习/" itemprop="url" rel="index">
                     <span itemprop="name">深度学习</span>
                   </a>
@@ -446,7 +530,6 @@
 
                 
                 
-
               
             </span>
           
@@ -454,9 +537,9 @@
           
             
               <span class="post-comments-count">
-                &nbsp; | &nbsp;
+                <span class="post-meta-divider">|</span>
                 <a href="/2016/11/26/20161126-mxnet-for-kaggle-digit-recognizer/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/11/26/20161126-mxnet-for-kaggle-digit-recognizer/" itemprop="commentsCount"></span>
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/11/26/20161126-mxnet-for-kaggle-digit-recognizer/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -467,7 +550,7 @@
           
           
              <span id="/2016/11/26/20161126-mxnet-for-kaggle-digit-recognizer/" class="leancloud_visitors" data-flag-title="使用mxnet进行kaggle竞赛digit recognizer">
-               &nbsp; | &nbsp;
+               <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
                </span>
@@ -477,6 +560,9 @@
           
 
           
+
+          
+
         </div>
       </header>
     
@@ -490,14 +576,16 @@
       
         
           
-            <h1 id="0-编译mxnet"><a href="#0-编译mxnet" class="headerlink" title="0. 编译mxnet"></a>0. 编译mxnet</h1><p>上一篇讲了如何编译caffe，mxnet与caffe的依赖包大体相同，只需要将mxnet依赖有源码从github上全clone下来进行编译即可。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">git clone --recursive https://github.com/dmlc/mxnet</div><div class="line">cd mxnet; cp make/osx.mk ./config.mk; make -j</div></pre></td></tr></table></figure>
-<h1 id="1-应用"><a href="#1-应用" class="headerlink" title="1. 应用"></a>1. 应用</h1><p>使用mxnet的python api，快速开发一个应用算法。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</div><div class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</div><div class="line"><span class="keyword">import</span> mxnet <span class="keyword">as</span> mx</div><div class="line"><span class="keyword">import</span> logging</div><div class="line"></div><div class="line">VALIDATION_SIZE = <span class="number">2000</span></div><div class="line"></div><div class="line">dataset = pd.read_csv(<span class="string">"../input/train.csv"</span>)</div><div class="line">target = dataset[[<span class="number">0</span>]].values.ravel()</div><div class="line">train = dataset.iloc[:,<span class="number">1</span>:].values</div><div class="line"></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_lenet</span><span class="params">()</span>:</span></div><div class="line">    data = mx.symbol.Variable(<span class="string">'data'</span>)</div><div class="line">    <span class="comment"># first conv</span></div><div class="line">    conv1 = mx.symbol.Convolution(data=data, kernel=(<span class="number">5</span>,<span class="number">5</span>), num_filter=<span class="number">20</span>)</div><div class="line">    tanh1 = mx.symbol.Activation(data=conv1, act_type=<span class="string">"tanh"</span>)</div><div class="line">    pool1 = mx.symbol.Pooling(data=tanh1, pool_type=<span class="string">"max"</span>,</div><div class="line">                              kernel=(<span class="number">2</span>,<span class="number">2</span>), stride=(<span class="number">2</span>,<span class="number">2</span>))</div><div class="line">    <span class="comment"># second conv</span></div><div class="line">    conv2 = mx.symbol.Convolution(data=pool1, kernel=(<span class="number">5</span>,<span class="number">5</span>), num_filter=<span class="number">50</span>)</div><div class="line">    tanh2 = mx.symbol.Activation(data=conv2, act_type=<span class="string">"tanh"</span>)</div><div class="line">    pool2 = mx.symbol.Pooling(data=tanh2, pool_type=<span class="string">"max"</span>,</div><div class="line">                              kernel=(<span class="number">2</span>,<span class="number">2</span>), stride=(<span class="number">2</span>,<span class="number">2</span>))</div><div class="line">    <span class="comment"># first fullc</span></div><div class="line">    flatten = mx.symbol.Flatten(data=pool2)</div><div class="line">    fc1 = mx.symbol.FullyConnected(data=flatten, num_hidden=<span class="number">500</span>)</div><div class="line">    tanh3 = mx.symbol.Activation(data=fc1, act_type=<span class="string">"tanh"</span>)</div><div class="line">    <span class="comment"># second fullc</span></div><div class="line">    fc2 = mx.symbol.FullyConnected(data=tanh3, num_hidden=<span class="number">10</span>)</div><div class="line">    <span class="comment"># loss</span></div><div class="line">    lenet = mx.symbol.SoftmaxOutput(data=fc2, name=<span class="string">'softmax'</span>)</div><div class="line">    <span class="keyword">return</span> lenet</div><div class="line"></div><div class="line">val_data = train[:VALIDATION_SIZE].astype(<span class="string">'float32'</span>)</div><div class="line">val_label = target[:VALIDATION_SIZE]</div><div class="line">train_data = train[VALIDATION_SIZE: , :].astype(<span class="string">'float32'</span>)</div><div class="line">train_label = target[VALIDATION_SIZE:]</div><div class="line">train_data = np.array(train_data).reshape((<span class="number">-1</span>, <span class="number">1</span>, <span class="number">28</span>, <span class="number">28</span>))</div><div class="line">val_data = np.array(val_data).reshape((<span class="number">-1</span>, <span class="number">1</span>, <span class="number">28</span>, <span class="number">28</span>))</div><div class="line"></div><div class="line">train_data[:] /= <span class="number">256.0</span></div><div class="line">val_data[:]/= <span class="number">256.0</span></div><div class="line"></div><div class="line">batch_size = <span class="number">500</span></div><div class="line">train_iter = mx.io.NDArrayIter(train_data, train_label, batch_size=batch_size, shuffle=<span class="keyword">True</span>)</div><div class="line">val_iter = mx.io.NDArrayIter(val_data, val_label, batch_size=batch_size)</div><div class="line"></div><div class="line"><span class="comment"># logging</span></div><div class="line">head = <span class="string">'%(asctime)-15s Node[0] %(message)s'</span></div><div class="line">logging.basicConfig(level=logging.DEBUG, format=head)</div><div class="line"></div><div class="line"><span class="comment"># create model</span></div><div class="line">devs = mx.gpu(<span class="number">0</span>)</div><div class="line">network=get_lenet()</div><div class="line">model = mx.model.FeedForward(</div><div class="line">        <span class="comment">#ctx                = devs,</span></div><div class="line">        symbol             = network,</div><div class="line">        num_epoch          = <span class="number">4</span>,</div><div class="line">        learning_rate      = <span class="number">0.1</span>,</div><div class="line">        momentum           = <span class="number">0.9</span>,</div><div class="line">        wd                 = <span class="number">0.00001</span>,</div><div class="line">        initializer        = mx.init.Xavier(factor_type=<span class="string">"in"</span>, magnitude=<span class="number">2.34</span>)</div><div class="line">        )</div><div class="line"></div><div class="line">eval_metrics = [<span class="string">'accuracy'</span>]</div><div class="line">model.fit(</div><div class="line">	X=train_iter,</div><div class="line">	eval_metric        = eval_metrics,</div><div class="line">	eval_data	 = val_iter</div><div class="line">	)</div><div class="line"></div><div class="line"><span class="comment">#predict</span></div><div class="line">test = pd.read_csv(<span class="string">"../input/test.csv"</span>).values</div><div class="line">test_data = test.astype(<span class="string">'float32'</span>)</div><div class="line">test_data = np.array(test_data).reshape((<span class="number">-1</span>, <span class="number">1</span>, <span class="number">28</span>, <span class="number">28</span>))</div><div class="line">test_data[:]/= <span class="number">256.0</span></div><div class="line">test_iter = mx.io.NDArrayIter(test_data, batch_size=batch_size)</div><div class="line"></div><div class="line">pred = model.predict(X = test_iter)</div><div class="line">pred = np.argsort(pred)</div><div class="line">np.savetxt(<span class="string">'submission_lenet.csv'</span>, np.c_[range(<span class="number">1</span>,len(test)+<span class="number">1</span>),pred[:,<span class="number">9</span>]], delimiter=<span class="string">','</span>, header = <span class="string">'ImageId,Label'</span>, comments = <span class="string">''</span>, fmt=<span class="string">'%d'</span>)</div></pre></td></tr></table></figure>
-<h1 id="结果"><a href="#结果" class="headerlink" title="结果"></a>结果</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">2016-11-26 21:19:07,577 Node[0] Start training with [cpu(0)]</div><div class="line">2016-11-26 21:21:21,802 Node[0] Epoch[0] Resetting Data Iterator</div><div class="line">2016-11-26 21:21:21,802 Node[0] Epoch[0] Time cost=134.220</div><div class="line">2016-11-26 21:21:24,613 Node[0] Epoch[0] Validation-accuracy=0.974000</div><div class="line">2016-11-26 21:23:36,314 Node[0] Epoch[1] Resetting Data Iterator</div><div class="line">2016-11-26 21:23:36,314 Node[0] Epoch[1] Time cost=131.700</div><div class="line">2016-11-26 21:23:38,900 Node[0] Epoch[1] Validation-accuracy=0.988000</div><div class="line">2016-11-26 21:25:48,668 Node[0] Epoch[2] Resetting Data Iterator</div><div class="line">2016-11-26 21:25:48,669 Node[0] Epoch[2] Time cost=129.769</div><div class="line">2016-11-26 21:25:51,246 Node[0] Epoch[2] Validation-accuracy=0.987500</div><div class="line">2016-11-26 21:28:01,337 Node[0] Epoch[3] Resetting Data Iterator</div><div class="line">2016-11-26 21:28:01,337 Node[0] Epoch[3] Time cost=130.091</div><div class="line">2016-11-26 21:28:03,945 Node[0] Epoch[3] Validation-accuracy=0.988000</div></pre></td></tr></table></figure>
-<p>提交的准确率为0.98571</p>
-
-          
+          0. 编译mxnet上一篇讲了如何编译caffe，mxnet与caffe的依赖包大体相同，只需要将mxnet依赖有源码从github上全clone下来进行编译即可。
+12git clone --recursive https://github.com/dmlc/mxnetcd mxnet; cp m
+          ...
+          <!--noindex-->
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/11/26/20161126-mxnet-for-kaggle-digit-recognizer/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -509,6 +597,7 @@
     <div>
       
     </div>
+
 
     <footer class="post-footer">
       
@@ -527,13 +616,26 @@
       
 
   
-  
 
   
   
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="http://www.linzhe.me/2016/11/26/20161126-install-caffe-on-mac/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="Zhe Lin">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="https://avatars2.githubusercontent.com/u/1837048">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="LinZhe's Notes">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="LinZhe's Notes" src="">
+    </span>
+  </span>
 
     
       <header class="post-header">
@@ -555,24 +657,30 @@
 
         <div class="post-meta">
           <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-11-26T13:51:29+08:00" content="2016-11-26">
-              2016-11-26
-            </time>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-11-26T13:51:29+08:00">
+                2016-11-26
+              </time>
+            
+
+            
+
+            
           </span>
 
           
             <span class="post-category" >
-              &nbsp; | &nbsp;
+              <span class="post-meta-divider">|</span>
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
               </span>
               <span class="post-meta-item-text">分类于</span>
               
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
                   <a href="/categories/深度学习/" itemprop="url" rel="index">
                     <span itemprop="name">深度学习</span>
                   </a>
@@ -580,7 +688,6 @@
 
                 
                 
-
               
             </span>
           
@@ -588,9 +695,9 @@
           
             
               <span class="post-comments-count">
-                &nbsp; | &nbsp;
+                <span class="post-meta-divider">|</span>
                 <a href="/2016/11/26/20161126-install-caffe-on-mac/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/11/26/20161126-install-caffe-on-mac/" itemprop="commentsCount"></span>
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/11/26/20161126-install-caffe-on-mac/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -601,7 +708,7 @@
           
           
              <span id="/2016/11/26/20161126-install-caffe-on-mac/" class="leancloud_visitors" data-flag-title="mac安装caffe过程">
-               &nbsp; | &nbsp;
+               <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
                </span>
@@ -611,6 +718,9 @@
           
 
           
+
+          
+
         </div>
       </header>
     
@@ -624,18 +734,16 @@
       
         
           
-            <h1 id="0-关于Caffe"><a href="#0-关于Caffe" class="headerlink" title="0. 关于Caffe"></a>0. 关于Caffe</h1><p>昨天看到amazon将mxnet做的其深度深度算法的消息，突然觉得应该开始学习一些深度学习的知识了。<br>本来想试试mxnet的，但是觉得还是先从caffe开始吧。caffe是深度学习在图像领域广泛使用的框架，有很多现在的model可以直接使用。</p>
-<h1 id="1-安装依赖"><a href="#1-安装依赖" class="headerlink" title="1. 安装依赖"></a>1. 安装依赖</h1><p>使用brew安装依赖，首先更新一下brew，不然可能出现意想不到的各种错误。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/usr/bin/ruby -e &quot;$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)&quot;</div></pre></td></tr></table></figure></p>
-<p>然后安装依赖</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">brew install -vd snappy leveldb gflags glog szip lmdb</div><div class="line">brew tap homebrew/science</div><div class="line">brew install hdf5 opencv protobuf boost</div></pre></td></tr></table></figure>
-<h1 id="2-编译"><a href="#2-编译" class="headerlink" title="2. 编译"></a>2. 编译</h1><p>下载caffe源码</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">git clone https://github.com/bvlc/caffe.git</div><div class="line">cd caffe</div><div class="line">cp Makefile.config.example Makefile.config</div></pre></td></tr></table></figure>
-<p>修改编译模式开关</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">CPU_ONLY := 1</div></pre></td></tr></table></figure>
-<p>编译<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">make -j</div></pre></td></tr></table></figure></p>
-<p>编译完成，可以开始动手运行例子了！</p>
-
-          
+          0. 关于Caffe昨天看到amazon将mxnet做的其深度深度算法的消息，突然觉得应该开始学习一些深度学习的知识了。本来想试试mxnet的，但是觉得还是先从caffe开始吧。caffe是深度学习在图像领域广泛使用的框架，有很多现在的model可以直接使用。
+1. 安装依赖使用brew安装依赖，首
+          ...
+          <!--noindex-->
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/11/26/20161126-install-caffe-on-mac/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -647,6 +755,7 @@
     <div>
       
     </div>
+
 
     <footer class="post-footer">
       
@@ -665,13 +774,26 @@
       
 
   
-  
 
   
   
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="http://www.linzhe.me/2016/11/05/20161105-logistic-regression/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="Zhe Lin">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="https://avatars2.githubusercontent.com/u/1837048">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="LinZhe's Notes">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="LinZhe's Notes" src="">
+    </span>
+  </span>
 
     
       <header class="post-header">
@@ -693,24 +815,30 @@
 
         <div class="post-meta">
           <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-11-05T07:57:49+08:00" content="2016-11-05">
-              2016-11-05
-            </time>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-11-05T07:57:49+08:00">
+                2016-11-05
+              </time>
+            
+
+            
+
+            
           </span>
 
           
             <span class="post-category" >
-              &nbsp; | &nbsp;
+              <span class="post-meta-divider">|</span>
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
               </span>
               <span class="post-meta-item-text">分类于</span>
               
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
                   <a href="/categories/机器学习/" itemprop="url" rel="index">
                     <span itemprop="name">机器学习</span>
                   </a>
@@ -718,7 +846,6 @@
 
                 
                 
-
               
             </span>
           
@@ -726,9 +853,9 @@
           
             
               <span class="post-comments-count">
-                &nbsp; | &nbsp;
+                <span class="post-meta-divider">|</span>
                 <a href="/2016/11/05/20161105-logistic-regression/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/11/05/20161105-logistic-regression/" itemprop="commentsCount"></span>
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/11/05/20161105-logistic-regression/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -739,7 +866,7 @@
           
           
              <span id="/2016/11/05/20161105-logistic-regression/" class="leancloud_visitors" data-flag-title="机器学习基础系列：Logistic Regression">
-               &nbsp; | &nbsp;
+               <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
                </span>
@@ -749,6 +876,9 @@
           
 
           
+
+          
+
         </div>
       </header>
     
@@ -762,9 +892,15 @@
       
         
           
-            <h2 id="0-介绍"><a href="#0-介绍" class="headerlink" title="0. 介绍"></a>0. 介绍</h2><p>因为其实现简单分类时计算量非常小，速度很快，存储资源低而被广泛的应用在诸如广告、推荐系统中，可以说逻辑回归是应用最广泛的分类算法之一，原因大概有以下几个方面：<br>— LR模型原理简单，易于实现并且效果还不错。<br>— 大量互联网公司中的广告和推荐系统大量使用了CTR预估模型，而LR则是CTR的基本算法。</p>
-<h2 id="1-线性二分类问题"><a href="#1-线性二分类问题" class="headerlink" title="1. 线性二分类问题"></a>1. 线性二分类问题</h2>
-          
+          0. 介绍因为其实现简单分类时计算量非常小，速度很快，存储资源低而被广泛的应用在诸如广告、推荐系统中，可以说逻辑回归是应用最广泛的分类算法之一，原因大概有以下几个方面：— LR模型原理简单，易于实现并且效果还不错。— 大量互联网公司中的广告和推荐系统大量使用了CTR预估模型，而LR则是CTR的基本算
+          ...
+          <!--noindex-->
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/11/05/20161105-logistic-regression/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -776,6 +912,7 @@
     <div>
       
     </div>
+
 
     <footer class="post-footer">
       
@@ -794,13 +931,26 @@
       
 
   
-  
 
   
   
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="http://www.linzhe.me/2016/08/05/20160816-spark-mllib-regularizer/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="Zhe Lin">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="https://avatars2.githubusercontent.com/u/1837048">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="LinZhe's Notes">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="LinZhe's Notes" src="">
+    </span>
+  </span>
 
     
       <header class="post-header">
@@ -812,7 +962,7 @@
             
               
                 
-                <a class="post-title-link" href="/2016/08/05/spark-mllib-regularizer/" itemprop="url">
+                <a class="post-title-link" href="/2016/08/05/20160816-spark-mllib-regularizer/" itemprop="url">
                   Spark MLlib 正则化
                 </a>
               
@@ -822,24 +972,30 @@
 
         <div class="post-meta">
           <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-08-05T23:21:01+08:00" content="2016-08-05">
-              2016-08-05
-            </time>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-08-05T23:21:01+08:00">
+                2016-08-05
+              </time>
+            
+
+            
+
+            
           </span>
 
           
             <span class="post-category" >
-              &nbsp; | &nbsp;
+              <span class="post-meta-divider">|</span>
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
               </span>
               <span class="post-meta-item-text">分类于</span>
               
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
                   <a href="/categories/Spark/" itemprop="url" rel="index">
                     <span itemprop="name">Spark</span>
                   </a>
@@ -847,7 +1003,6 @@
 
                 
                 
-
               
             </span>
           
@@ -855,9 +1010,9 @@
           
             
               <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/08/05/spark-mllib-regularizer/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/08/05/spark-mllib-regularizer/" itemprop="commentsCount"></span>
+                <span class="post-meta-divider">|</span>
+                <a href="/2016/08/05/20160816-spark-mllib-regularizer/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/08/05/20160816-spark-mllib-regularizer/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -867,8 +1022,8 @@
 
           
           
-             <span id="/2016/08/05/spark-mllib-regularizer/" class="leancloud_visitors" data-flag-title="Spark MLlib 正则化">
-               &nbsp; | &nbsp;
+             <span id="/2016/08/05/20160816-spark-mllib-regularizer/" class="leancloud_visitors" data-flag-title="Spark MLlib 正则化">
+               <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
                </span>
@@ -878,6 +1033,9 @@
           
 
           
+
+          
+
         </div>
       </header>
     
@@ -891,30 +1049,34 @@
       
         
           
-            <h1 id="4-1-正则化"><a href="#4-1-正则化" class="headerlink" title="4.1 正则化"></a>4.1 正则化</h1><p>正则化是为了约束训练过程，使其向生成简单模型的方向收敛，从而避免过拟合。MLlib目前支持下面的正则化方法：</p>
-<table>
-<thead>
-<tr>
-<th>范数</th>
-<th>作用</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>L1</td>
-<td>促进产生稀疏的权值</td>
-</tr>
-<tr>
-<td>L2</td>
-<td>平滑</td>
-</tr>
-</tbody>
-</table>
-<h3 id="MLlib正则化抽象类"><a href="#MLlib正则化抽象类" class="headerlink" title="MLlib正则化抽象类"></a>MLlib正则化抽象类</h3><figure class="highlight scala"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">Updater</span> <span class="keyword">extends</span> <span class="title">Serializable</span> </span>&#123;</div><div class="line">  <span class="comment">/**</span></div><div class="line">   * Compute an updated value for weights given the gradient, stepSize, iteration number and</div><div class="line">   * regularization parameter. Also returns the regularization value regParam * R(w)</div><div class="line">   * computed using the *updated* weights.</div><div class="line">   *</div><div class="line">   * @param weightsOld - Column matrix of size dx1 where d is the number of features.</div><div class="line">   * @param gradient - Column matrix of size dx1 where d is the number of features.</div><div class="line">   * @param stepSize - step size across iterations</div><div class="line">   * @param iter - Iteration number</div><div class="line">   * @param regParam - Regularization parameter</div><div class="line">   *</div><div class="line">   * @return A tuple of 2 elements. The first element is a column matrix containing updated weights,</div><div class="line">   *         and the second element is the regularization value computed using updated weights.</div><div class="line">   */</div><div class="line">  <span class="function"><span class="keyword">def</span> <span class="title">compute</span></span>(</div><div class="line">      weightsOld: <span class="type">Vector</span>,</div><div class="line">      gradient: <span class="type">Vector</span>,</div><div class="line">      stepSize: <span class="type">Double</span>,</div><div class="line">      iter: <span class="type">Int</span>,</div><div class="line">      regParam: <span class="type">Double</span>): (<span class="type">Vector</span>, <span class="type">Double</span>)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h3 id="L1范式"><a href="#L1范式" class="headerlink" title="L1范式"></a>L1范式</h3><figure class="highlight scala"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@DeveloperApi</span></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">L1Updater</span> <span class="keyword">extends</span> <span class="title">Updater</span> </span>&#123;</div><div class="line">  <span class="keyword">override</span> <span class="function"><span class="keyword">def</span> <span class="title">compute</span></span>(</div><div class="line">      weightsOld: <span class="type">Vector</span>,</div><div class="line">      gradient: <span class="type">Vector</span>,</div><div class="line">      stepSize: <span class="type">Double</span>,</div><div class="line">      iter: <span class="type">Int</span>,</div><div class="line">      regParam: <span class="type">Double</span>): (<span class="type">Vector</span>, <span class="type">Double</span>) = &#123;</div><div class="line">    <span class="keyword">val</span> thisIterStepSize = stepSize / math.sqrt(iter)</div><div class="line">    <span class="comment">// Take gradient step</span></div><div class="line">    <span class="keyword">val</span> brzWeights: <span class="type">BV</span>[<span class="type">Double</span>] = weightsOld.asBreeze.toDenseVector</div><div class="line">    brzAxpy(-thisIterStepSize, gradient.asBreeze, brzWeights)</div><div class="line">    <span class="comment">// Apply proximal operator (soft thresholding)</span></div><div class="line">    <span class="keyword">val</span> shrinkageVal = regParam * thisIterStepSize</div><div class="line">    <span class="keyword">var</span> i = <span class="number">0</span></div><div class="line">    <span class="keyword">val</span> len = brzWeights.length</div><div class="line">    <span class="keyword">while</span> (i &lt; len) &#123;</div><div class="line">      <span class="keyword">val</span> wi = brzWeights(i)</div><div class="line">      brzWeights(i) = signum(wi) * max(<span class="number">0.0</span>, abs(wi) - shrinkageVal)</div><div class="line">      i += <span class="number">1</span></div><div class="line">    &#125;</div><div class="line"></div><div class="line">    (<span class="type">Vectors</span>.fromBreeze(brzWeights), brzNorm(brzWeights, <span class="number">1.0</span>) * regParam)</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h3 id="L2范式"><a href="#L2范式" class="headerlink" title="L2范式"></a>L2范式</h3><figure class="highlight scala"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@DeveloperApi</span></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">SquaredL2Updater</span> <span class="keyword">extends</span> <span class="title">Updater</span> </span>&#123;</div><div class="line">  <span class="keyword">override</span> <span class="function"><span class="keyword">def</span> <span class="title">compute</span></span>(</div><div class="line">      weightsOld: <span class="type">Vector</span>,</div><div class="line">      gradient: <span class="type">Vector</span>,</div><div class="line">      stepSize: <span class="type">Double</span>,</div><div class="line">      iter: <span class="type">Int</span>,</div><div class="line">      regParam: <span class="type">Double</span>): (<span class="type">Vector</span>, <span class="type">Double</span>) = &#123;</div><div class="line">    <span class="comment">// add up both updates from the gradient of the loss (= step) as well as</span></div><div class="line">    <span class="comment">// the gradient of the regularizer (= regParam * weightsOld)</span></div><div class="line">    <span class="comment">// w' = w - thisIterStepSize * (gradient + regParam * w)</span></div><div class="line">    <span class="comment">// w' = (1 - thisIterStepSize * regParam) * w - thisIterStepSize * gradient</span></div><div class="line">    <span class="keyword">val</span> thisIterStepSize = stepSize / math.sqrt(iter)</div><div class="line">    <span class="keyword">val</span> brzWeights: <span class="type">BV</span>[<span class="type">Double</span>] = weightsOld.asBreeze.toDenseVector</div><div class="line">    brzWeights :*= (<span class="number">1.0</span> - thisIterStepSize * regParam)</div><div class="line">    brzAxpy(-thisIterStepSize, gradient.asBreeze, brzWeights)</div><div class="line">    <span class="keyword">val</span> norm = brzNorm(brzWeights, <span class="number">2.0</span>)</div><div class="line"></div><div class="line">    (<span class="type">Vectors</span>.fromBreeze(brzWeights), <span class="number">0.5</span> * regParam * norm * norm)</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+          4.1 正则化正则化是为了约束训练过程，使其向生成简单模型的方向收敛，从而避免过拟合。MLlib目前支持下面的正则化方法：
 
-          
+
+
+范数
+作用
+
+
+
+
+L1
+促进产生稀疏的权值
+
+
+L2
+平滑
+
+
+
+MLlib正则化抽象类12345678910111213141516171819202122abstr
+          ...
+          <!--noindex-->
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/08/05/20160816-spark-mllib-regularizer/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -926,6 +1088,7 @@
     <div>
       
     </div>
+
 
     <footer class="post-footer">
       
@@ -944,13 +1107,26 @@
       
 
   
-  
 
   
   
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="http://www.linzhe.me/2016/08/04/20160804-spark-rdd/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="Zhe Lin">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="https://avatars2.githubusercontent.com/u/1837048">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="LinZhe's Notes">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="LinZhe's Notes" src="">
+    </span>
+  </span>
 
     
       <header class="post-header">
@@ -962,7 +1138,7 @@
             
               
                 
-                <a class="post-title-link" href="/2016/08/04/spark-rdd/" itemprop="url">
+                <a class="post-title-link" href="/2016/08/04/20160804-spark-rdd/" itemprop="url">
                   spark RDD 操作
                 </a>
               
@@ -972,24 +1148,30 @@
 
         <div class="post-meta">
           <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-08-04T20:06:29+08:00" content="2016-08-04">
-              2016-08-04
-            </time>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-08-04T20:06:29+08:00">
+                2016-08-04
+              </time>
+            
+
+            
+
+            
           </span>
 
           
             <span class="post-category" >
-              &nbsp; | &nbsp;
+              <span class="post-meta-divider">|</span>
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
               </span>
               <span class="post-meta-item-text">分类于</span>
               
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
                   <a href="/categories/Spark/" itemprop="url" rel="index">
                     <span itemprop="name">Spark</span>
                   </a>
@@ -997,7 +1179,6 @@
 
                 
                 
-
               
             </span>
           
@@ -1005,9 +1186,9 @@
           
             
               <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/08/04/spark-rdd/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/08/04/spark-rdd/" itemprop="commentsCount"></span>
+                <span class="post-meta-divider">|</span>
+                <a href="/2016/08/04/20160804-spark-rdd/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/08/04/20160804-spark-rdd/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -1017,8 +1198,8 @@
 
           
           
-             <span id="/2016/08/04/spark-rdd/" class="leancloud_visitors" data-flag-title="spark RDD 操作">
-               &nbsp; | &nbsp;
+             <span id="/2016/08/04/20160804-spark-rdd/" class="leancloud_visitors" data-flag-title="spark RDD 操作">
+               <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
                </span>
@@ -1028,6 +1209,9 @@
           
 
           
+
+          
+
         </div>
       </header>
     
@@ -1041,67 +1225,16 @@
       
         
           
-            <h1 id="2-1-Spark-RDD操作"><a href="#2-1-Spark-RDD操作" class="headerlink" title="2.1 Spark RDD操作"></a>2.1 Spark RDD操作</h1><h2 id="2-1-1-RDD是什么？"><a href="#2-1-1-RDD是什么？" class="headerlink" title="2.1.1 RDD是什么？"></a>2.1.1 RDD是什么？</h2><p>弹性分布式数据集RDD是Spark中的抽象数据结构类型，任何数据在Spark中都被表示为RDD。</p>
-<figure class="highlight scala"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">RDD</span>[<span class="type">T</span>: <span class="type">ClassTag</span>](<span class="params"></span></span></div><div class="line">    @transient private var _sc: <span class="type">SparkContext</span>,</div><div class="line">    @transient private var deps: <span class="type">Seq</span>[<span class="type">Dependency</span>[_]]</div><div class="line">  ) <span class="keyword">extends</span> <span class="title">Serializable</span> <span class="keyword">with</span> <span class="title">Logging</span></div></pre></td></tr></table></figure>
-<p>RDD还提供了一组丰富的操作来操作这些数据。在这些操作中，诸如map、flatMap、filter等转换操作实现了monad模式，很好地契合了Scala的集合操作。除此之外，RDD还提供了诸如join、groupBy、reduceByKey等更为方便的操作（注意，reduceByKey是action，而非transformation），以支持常见的数据运算。RDD可以简单看成是一个数组。和普通数组的区别是，RDD中的数据是分区存储的，这样不同分区的数据就可以分布在不同的机器上，同时可以被并行处理。因此，Spark应用程序所做的就是把需要处理的数据转换为RDD，然后对RDD进行一系列的变换和操作从而得到结果。RDD的接口只支持粗粒度的操作，一个操作会被应用到RDD上所有的数据上。</p>
-<h2 id="2-1-2-RDD基本转换操作"><a href="#2-1-2-RDD基本转换操作" class="headerlink" title="2.1.2 RDD基本转换操作"></a>2.1.2 RDD基本转换操作</h2><ul>
-<li>map操作将RDD中类型为T的元素一对一的映射为类型为U的元素</li>
-</ul>
-<figure class="highlight scala"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">map</span></span>[<span class="type">U</span>: <span class="type">ClassTag</span>](f: <span class="type">T</span> =&gt; <span class="type">U</span>): <span class="type">RDD</span>[<span class="type">U</span>] = withScope &#123;</div><div class="line">  <span class="keyword">val</span> cleanF = sc.clean(f)</div><div class="line">  <span class="keyword">new</span> <span class="type">MapPartitionsRDD</span>[<span class="type">U</span>, <span class="type">T</span>](<span class="keyword">this</span>, (context, pid, iter) =&gt; iter.map(cleanF))</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>举例</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">scala&gt; var rdd = sc.makeRDD(1 to 5, 1)</div><div class="line">rdd: org.apache.spark.rdd.RDD[Int] = ParallelCollectionRDD[1] at makeRDD at &lt;console&gt;:21</div><div class="line">scala&gt; rdd.collect()</div><div class="line">res2: Array[Int] = Array(1, 2, 3, 4, 5)</div><div class="line">scala&gt; val mapRDD = rdd.map(x =&gt; x.toFloat)</div><div class="line">mapRDD: org.apache.spark.rdd.RDD[Float] = MapPartitionsRDD[2] at map at &lt;console&gt;:23</div><div class="line">scala&gt; mapRDD.collect()</div><div class="line">res3: Array[Float] = Array(1.0, 2.0, 3.0, 4.0, 5.0)</div></pre></td></tr></table></figure>
-<ul>
-<li>distinct操作返回RDD中所有不一样的元素</li>
-</ul>
-<figure class="highlight scala"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">distinct</span></span>(numPartitions: <span class="type">Int</span>)(<span class="keyword">implicit</span> ord: <span class="type">Ordering</span>[<span class="type">T</span>] = <span class="literal">null</span>): <span class="type">RDD</span>[<span class="type">T</span>] = withScope &#123;</div><div class="line">  map(x =&gt; (x, <span class="literal">null</span>)).reduceByKey((x, y) =&gt; x, numPartitions).map(_._1)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<ul>
-<li>flatMap操作将RDD中每一个元素进行一对多转换</li>
-</ul>
-<figure class="highlight scala"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">flatMap</span></span>[<span class="type">U</span>: <span class="type">ClassTag</span>](f: <span class="type">T</span> =&gt; <span class="type">TraversableOnce</span>[<span class="type">U</span>]): <span class="type">RDD</span>[<span class="type">U</span>] = withScope &#123;</div><div class="line">  <span class="keyword">val</span> cleanF = sc.clean(f)</div><div class="line">  <span class="keyword">new</span> <span class="type">MapPartitionsRDD</span>[<span class="type">U</span>, <span class="type">T</span>](<span class="keyword">this</span>, (context, pid, iter) =&gt; iter.flatMap(cleanF))</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>  举例<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">scala&gt; val flatMapRDD = rdd.flatMap(x =&gt; 1 to x)</div><div class="line">flatMapRDD: org.apache.spark.rdd.RDD[Int] = MapPartitionsRDD[3] at flatMap at &lt;console&gt;:23</div><div class="line">scala&gt; flatMapRDD.collect()</div><div class="line">res4: Array[Int] = Array(1, 1, 2, 1, 2, 3, 1, 2, 3, 4, 1, 2, 3, 4, 5)</div></pre></td></tr></table></figure></p>
-<ul>
-<li>filter操作对RDD中的元素进行过滤</li>
-</ul>
-<figure class="highlight scala"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">filter</span></span>(f: <span class="type">T</span> =&gt; <span class="type">Boolean</span>): <span class="type">RDD</span>[<span class="type">T</span>] = withScope &#123;</div><div class="line">  <span class="keyword">val</span> cleanF = sc.clean(f)</div><div class="line">  <span class="keyword">new</span> <span class="type">MapPartitionsRDD</span>[<span class="type">T</span>, <span class="type">T</span>](</div><div class="line">    <span class="keyword">this</span>,</div><div class="line">    (context, pid, iter) =&gt; iter.filter(cleanF),</div><div class="line">    preservesPartitioning = <span class="literal">true</span>)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h2 id="2-1-3-键值RDD转换操作"><a href="#2-1-3-键值RDD转换操作" class="headerlink" title="2.1.3 键值RDD转换操作"></a>2.1.3 键值RDD转换操作</h2><ul>
-<li>combineByKey、foldByKey、reduceByKey、groupByKey这四种操作类型，都是针对RDD[K, V]进行，最终会归结为combineByKey的操作上。<br>combineByKey的内部实现分成三部分来完成：</li>
-</ul>
-<ol>
-<li><p>首先，根据是否需要在map端进行combine操作决定是否对RDD进行一次mapPartitions操作，从而减少shuffle的数据量。</p>
-</li>
-<li><p>第2步根据partitioner函数对MapPartitionsRDD进行shuffle操作。</p>
-</li>
-<li><p>最后对suffle的结果进行combine操作。</p>
-</li>
-</ol>
-<ul>
-<li>join、leftOuterJoin、rightOuterJoin针对RDD[K, V]中K值相等的连接操作，最终归结为cogroup来实现。</li>
-</ul>
-<figure class="highlight scala"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">cogroup</span></span>[<span class="type">W</span>](other: <span class="type">RDD</span>[(<span class="type">K</span>, <span class="type">W</span>)], partitioner: <span class="type">Partitioner</span>)</div><div class="line">    : <span class="type">RDD</span>[(<span class="type">K</span>, (<span class="type">Iterable</span>[<span class="type">V</span>], <span class="type">Iterable</span>[<span class="type">W</span>]))] = self.withScope &#123;</div><div class="line">  <span class="keyword">if</span> (partitioner.isInstanceOf[<span class="type">HashPartitioner</span>] &amp;&amp; keyClass.isArray) &#123;</div><div class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> <span class="type">SparkException</span>(<span class="string">"Default partitioner cannot partition array keys."</span>)</div><div class="line">  &#125;</div><div class="line">  <span class="keyword">val</span> cg = <span class="keyword">new</span> <span class="type">CoGroupedRDD</span>[<span class="type">K</span>](<span class="type">Seq</span>(self, other), partitioner)</div><div class="line">  cg.mapValues &#123; <span class="keyword">case</span> <span class="type">Array</span>(vs, w1s) =&gt;</div><div class="line">    (vs.asInstanceOf[<span class="type">Iterable</span>[<span class="type">V</span>]], w1s.asInstanceOf[<span class="type">Iterable</span>[<span class="type">W</span>]])</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>一个join操作会产生CoGroupRDD、MapValuesRDD、FlatMapValuesRDD三个RDD。</p>
-<figure class="highlight scala"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">join</span></span>[<span class="type">W</span>](other: <span class="type">RDD</span>[(<span class="type">K</span>, <span class="type">W</span>)], partitioner: <span class="type">Partitioner</span>): <span class="type">RDD</span>[(<span class="type">K</span>, (<span class="type">V</span>, <span class="type">W</span>))] = self.withScope &#123;</div><div class="line">  <span class="keyword">this</span>.cogroup(other, partitioner).flatMapValues( pair =&gt;</div><div class="line">    <span class="keyword">for</span> (v &lt;- pair._1.iterator; w &lt;- pair._2.iterator) <span class="keyword">yield</span> (v, w)</div><div class="line">  )</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h2 id="2-1-4-RDD依赖关系"><a href="#2-1-4-RDD依赖关系" class="headerlink" title="2.1.4 RDD依赖关系"></a>2.1.4 RDD依赖关系</h2><p>因为RDD操作是粗粒度的，每一个转换操作都会产生一个新有RDD，所以前后的RDD就会形成前后依赖关系。Spark中有两种依赖类型，窄依赖（Narrow Dependenceis）和宽依赖（Wide Dependencies）。</p>
-<ul>
-<li><p>窄依赖，每一个父RDD的分区最多只被子RDD的一个分区所依赖，map、filter、union操作就会形成一个窄依赖</p>
-</li>
-<li><p>宽依赖，多个子RDD的分区会依赖于同一个父RDD的分区。两个RDD数据集之间进行join操作就会形成宽依赖。</p>
-</li>
-</ul>
-<h2 id="2-1-5-使用Spark实现PageRank算法"><a href="#2-1-5-使用Spark实现PageRank算法" class="headerlink" title="2.1.5 使用Spark实现PageRank算法"></a>2.1.5 使用Spark实现PageRank算法</h2><p>PageRank，网页排名，又称网页级别、Google左侧排名或佩奇排名，是一种由搜索引擎根据网页之间相互的超链接计算的技术，而作为网页排名的要素之一，以Google公司创办人拉里·佩奇（Larry Page）之姓来命名。Google用它来体现网页的相关性和重要性，在搜索引擎优化操作中是经常被用来评估网页优化的成效因素之一。</p>
-<p>PageRank通过网络浩瀚的超链接关系来确定一个页面的等级。Google把从A页面到B页面的链接解释为A页面给B页面投票，Google根据投票来源（甚至来源的来源，即链接到A页面的页面）和投票目标的等级来决定新的等级。简单的说，一个高等级的页面可以使其他低等级页面的等级提升。[来源<a href="https://zh.wikipedia.org/wiki/PageRank" target="_blank" rel="external">维基百科</a>]</p>
-<p>其算法原理如下：</p>
-<ol>
-<li>通过链接关系将网页构建成Web图，每个页面设置相同的PageRank值，初始一般为1。</li>
-<li>将每一个网页的权重贡献发送给相邻的网页，权重贡献=权重/指向的URL个数</li>
-<li>对天每一个网页，将收到的权重贡献相加记为contribs，重新计算权重rank=0.15 + contribs*0.85</li>
-<li>迭代1、2、3，直到收敛。</li>
-</ol>
-<p>利用Spark的各种操作方法，可以方便的实现PageRank算法，实现如下：</p>
-<figure class="highlight scala"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">val</span> <span class="type">MAX_ITERATION</span> = <span class="number">20</span></div><div class="line"><span class="keyword">val</span> links = sc.parallelize(<span class="type">Array</span>(('<span class="type">A</span>', <span class="type">Array</span>('<span class="type">D</span>')), ('<span class="type">B</span>', <span class="type">Array</span>('<span class="type">A</span>')), ('<span class="type">C</span>', <span class="type">Array</span>('<span class="type">A</span>', '<span class="type">B</span>')), ('<span class="type">D</span>', <span class="type">Array</span>('<span class="type">A</span>', '<span class="type">C</span>'))), <span class="number">2</span>).map(x =&gt; (x._1,x._2)).cache()</div><div class="line"><span class="keyword">var</span> ranks = sc.parallelize(<span class="type">Array</span>(('<span class="type">A</span>', <span class="number">1.0</span>), ('<span class="type">B</span>', <span class="number">1.0</span>), ('<span class="type">C</span>', <span class="number">1.0</span>), ('<span class="type">D</span>', <span class="number">1.0</span>)), <span class="number">2</span>)</div><div class="line"><span class="keyword">for</span> (i &lt;- <span class="number">1</span> to <span class="type">MAX_ITERATION</span>) &#123;</div><div class="line">  <span class="keyword">val</span> contribs = links.join(ranks, <span class="number">2</span>).flatMap &#123;</div><div class="line">    <span class="keyword">case</span> (url, (links, rank)) =&gt; links.map(dest =&gt; (dest, rank/links.size))</div><div class="line">  &#125;</div><div class="line">  ranks = contribs.reduceByKey(_ + _, <span class="number">2</span>).mapValues(<span class="number">0.15</span> + <span class="number">0.85</span> * _)</div><div class="line">&#125;</div><div class="line">ranks.collect()</div></pre></td></tr></table></figure>
-<p>最终结果：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">res15: Array[(Char, Double)] = Array((B,0.4613200524321036), (D,1.3705281840649928), (A,1.4357617405523626), (C,0.7323900229505396))</div></pre></td></tr></table></figure>
-
-          
+          2.1 Spark RDD操作2.1.1 RDD是什么？弹性分布式数据集RDD是Spark中的抽象数据结构类型，任何数据在Spark中都被表示为RDD。
+1234abstract class RDD[T: ClassTag](    @transient private var _sc: Spark
+          ...
+          <!--noindex-->
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/08/04/20160804-spark-rdd/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -1113,6 +1246,7 @@
     <div>
       
     </div>
+
 
     <footer class="post-footer">
       
@@ -1131,13 +1265,26 @@
       
 
   
-  
 
   
   
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="http://www.linzhe.me/2016/07/15/20160715-system-log-extract-from-chromium-code/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="Zhe Lin">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="https://avatars2.githubusercontent.com/u/1837048">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="LinZhe's Notes">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="LinZhe's Notes" src="">
+    </span>
+  </span>
 
     
       <header class="post-header">
@@ -1149,7 +1296,7 @@
             
               
                 
-                <a class="post-title-link" href="/2016/07/15/system-log-extract-from-chromium-code-md/" itemprop="url">
+                <a class="post-title-link" href="/2016/07/15/20160715-system-log-extract-from-chromium-code/" itemprop="url">
                   system log extract from chromium code
                 </a>
               
@@ -1159,13 +1306,19 @@
 
         <div class="post-meta">
           <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-07-15T16:33:10+08:00" content="2016-07-15">
-              2016-07-15
-            </time>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-07-15T16:33:10+08:00">
+                2016-07-15
+              </time>
+            
+
+            
+
+            
           </span>
 
           
@@ -1173,9 +1326,9 @@
           
             
               <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/07/15/system-log-extract-from-chromium-code-md/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/07/15/system-log-extract-from-chromium-code-md/" itemprop="commentsCount"></span>
+                <span class="post-meta-divider">|</span>
+                <a href="/2016/07/15/20160715-system-log-extract-from-chromium-code/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/07/15/20160715-system-log-extract-from-chromium-code/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -1185,8 +1338,8 @@
 
           
           
-             <span id="/2016/07/15/system-log-extract-from-chromium-code-md/" class="leancloud_visitors" data-flag-title="system log extract from chromium code">
-               &nbsp; | &nbsp;
+             <span id="/2016/07/15/20160715-system-log-extract-from-chromium-code/" class="leancloud_visitors" data-flag-title="system log extract from chromium code">
+               <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
                </span>
@@ -1196,6 +1349,9 @@
           
 
           
+
+          
+
         </div>
       </header>
     
@@ -1209,9 +1365,16 @@
       
         
           
-            <p>glog是Google的一个应用程序的日志库。它提供基于C++风格的流的日志API，以及各种辅助的宏。打印日志只需以流的形式传给 LOG(level) ，例如：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">VLOG(INFO) &lt;&lt; <span class="string">"File Path: "</span> &lt;&lt; file_path;</div></pre></td></tr></table></figure></p>
+          glog是Google的一个应用程序的日志库。它提供基于C++风格的流的日志API，以及各种辅助的宏。打印日志只需以流的形式传给 LOG(level) ，例如：1VLOG(INFO) &lt;&lt; "File Path: " &lt;&lt; file_path;
 
           
+          <!--noindex-->
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/07/15/20160715-system-log-extract-from-chromium-code/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -1223,6 +1386,7 @@
     <div>
       
     </div>
+
 
     <footer class="post-footer">
       
@@ -1241,13 +1405,26 @@
       
 
   
-  
 
   
   
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="http://www.linzhe.me/2016/07/14/20160714-cache-server-start-up/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="Zhe Lin">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="https://avatars2.githubusercontent.com/u/1837048">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="LinZhe's Notes">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="LinZhe's Notes" src="">
+    </span>
+  </span>
 
     
       <header class="post-header">
@@ -1259,7 +1436,7 @@
             
               
                 
-                <a class="post-title-link" href="/2016/07/14/cache-server-start-up/" itemprop="url">
+                <a class="post-title-link" href="/2016/07/14/20160714-cache-server-start-up/" itemprop="url">
                   cache server： 冷热数据切换
                 </a>
               
@@ -1269,24 +1446,30 @@
 
         <div class="post-meta">
           <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-07-14T19:43:00+08:00" content="2016-07-14">
-              2016-07-14
-            </time>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-07-14T19:43:00+08:00">
+                2016-07-14
+              </time>
+            
+
+            
+
+            
           </span>
 
           
             <span class="post-category" >
-              &nbsp; | &nbsp;
+              <span class="post-meta-divider">|</span>
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
               </span>
               <span class="post-meta-item-text">分类于</span>
               
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
                   <a href="/categories/cache-server/" itemprop="url" rel="index">
                     <span itemprop="name">cache_server</span>
                   </a>
@@ -1294,7 +1477,6 @@
 
                 
                 
-
               
             </span>
           
@@ -1302,9 +1484,9 @@
           
             
               <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/07/14/cache-server-start-up/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/07/14/cache-server-start-up/" itemprop="commentsCount"></span>
+                <span class="post-meta-divider">|</span>
+                <a href="/2016/07/14/20160714-cache-server-start-up/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/07/14/20160714-cache-server-start-up/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -1314,8 +1496,8 @@
 
           
           
-             <span id="/2016/07/14/cache-server-start-up/" class="leancloud_visitors" data-flag-title="cache server： 冷热数据切换">
-               &nbsp; | &nbsp;
+             <span id="/2016/07/14/20160714-cache-server-start-up/" class="leancloud_visitors" data-flag-title="cache server： 冷热数据切换">
+               <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
                </span>
@@ -1325,6 +1507,9 @@
           
 
           
+
+          
+
         </div>
       </header>
     
@@ -1338,12 +1523,15 @@
       
         
           
-            <h3 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h3><p>leveldb是一个Google开发的高性能的字符串类型的K-V存储C/C++类库，其详细介绍可参考<a href="https://github.com/google/leveldb" target="_blank" rel="external">Github主页</a>，刚开始工作时使用过一段时间，用于存储爬虫系统爬取的大量网页数据。但是后来就一直没有使用过。<br>最近在做推荐时，发现user profile的数据实在太大，即使有类似于Redis集群1T的内存也没法将用户所有有数据cache下来，一直想着能不能做个冷热的备件系统加大对user profile数据存储数量，结合leveldb和redis。</p>
-<h3 id="leveldb的优势"><a href="#leveldb的优势" class="headerlink" title="leveldb的优势"></a>leveldb的优势</h3><p>LevelDB内部采用连续的块存储数据，充分发挥了顺序磁盘I/O的性能，并且运用了现代操作系统里的高性能缓冲区管理。这样的结构正好迎合了现代内存的层次式结构， 避免了与产生高性能的操作系统决策之间的冲突。</p>
-<h3 id="redis"><a href="#redis" class="headerlink" title="redis"></a>redis</h3><p>Redis 是完全开源免费的，遵守BSD协议，是一个高性能的key-value数据库。<br>Redis不仅仅支持简单的key-value类型的数据，同时还提供list，set，zset，hash等数据结构的存储。<br>从3.0版本开始，Redis支持数据的备份，即master-slave模式的数据备份。</p>
-<h3 id="冷热数据"><a href="#冷热数据" class="headerlink" title="冷热数据"></a>冷热数据</h3><p>因为redis强劲的性能，与leveldb互相配合，将冷热数据分开存储，互相交换数据，以达到冷热切换的目的。</p>
-
-          
+          背景leveldb是一个Google开发的高性能的字符串类型的K-V存储C/C++类库，其详细介绍可参考Github主页，刚开始工作时使用过一段时间，用于存储爬虫系统爬取的大量网页数据。但是后来就一直没有使用过。最近在做推荐时，发现user profile的数据实在太大，即使有类似于Redis集群1
+          ...
+          <!--noindex-->
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/07/14/20160714-cache-server-start-up/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -1355,6 +1543,7 @@
     <div>
       
     </div>
+
 
     <footer class="post-footer">
       
@@ -1373,13 +1562,26 @@
       
 
   
-  
 
   
   
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="http://www.linzhe.me/2016/07/10/20160710-build-recommendtion-system/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="Zhe Lin">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="https://avatars2.githubusercontent.com/u/1837048">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="LinZhe's Notes">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="LinZhe's Notes" src="">
+    </span>
+  </span>
 
     
       <header class="post-header">
@@ -1391,7 +1593,7 @@
             
               
                 
-                <a class="post-title-link" href="/2016/07/10/build-recommendtion-system/" itemprop="url">
+                <a class="post-title-link" href="/2016/07/10/20160710-build-recommendtion-system/" itemprop="url">
                   微信推荐系统
                 </a>
               
@@ -1401,24 +1603,30 @@
 
         <div class="post-meta">
           <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-07-10T10:31:00+08:00" content="2016-07-10">
-              2016-07-10
-            </time>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-07-10T10:31:00+08:00">
+                2016-07-10
+              </time>
+            
+
+            
+
+            
           </span>
 
           
             <span class="post-category" >
-              &nbsp; | &nbsp;
+              <span class="post-meta-divider">|</span>
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
               </span>
               <span class="post-meta-item-text">分类于</span>
               
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
                   <a href="/categories/github/" itemprop="url" rel="index">
                     <span itemprop="name">github</span>
                   </a>
@@ -1426,7 +1634,6 @@
 
                 
                 
-
               
             </span>
           
@@ -1434,9 +1641,9 @@
           
             
               <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/07/10/build-recommendtion-system/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/07/10/build-recommendtion-system/" itemprop="commentsCount"></span>
+                <span class="post-meta-divider">|</span>
+                <a href="/2016/07/10/20160710-build-recommendtion-system/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/07/10/20160710-build-recommendtion-system/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -1446,8 +1653,8 @@
 
           
           
-             <span id="/2016/07/10/build-recommendtion-system/" class="leancloud_visitors" data-flag-title="微信推荐系统">
-               &nbsp; | &nbsp;
+             <span id="/2016/07/10/20160710-build-recommendtion-system/" class="leancloud_visitors" data-flag-title="微信推荐系统">
+               <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
                </span>
@@ -1457,6 +1664,9 @@
           
 
           
+
+          
+
         </div>
       </header>
     
@@ -1470,21 +1680,28 @@
       
         
           
-            <h3 id="爬虫"><a href="#爬虫" class="headerlink" title="爬虫"></a>爬虫</h3><ol>
-<li>正文抽取</li>
-<li>主题抽取</li>
-</ol>
-<h3 id="推荐引擎"><a href="#推荐引擎" class="headerlink" title="推荐引擎"></a>推荐引擎</h3><ol>
-<li>tag rank</li>
-<li>协同过滤</li>
-<li>user profile</li>
-</ol>
-<h3 id="客户端"><a href="#客户端" class="headerlink" title="客户端"></a>客户端</h3><ol>
-<li>iOS</li>
-<li>Android</li>
-</ol>
+          爬虫
+正文抽取
+主题抽取
+
+推荐引擎
+tag rank
+协同过滤
+user profile
+
+客户端
+iOS
+Android
+
 
           
+          <!--noindex-->
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/07/10/20160710-build-recommendtion-system/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -1496,6 +1713,7 @@
     <div>
       
     </div>
+
 
     <footer class="post-footer">
       
@@ -1514,13 +1732,26 @@
       
 
   
-  
 
   
   
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="http://www.linzhe.me/2016/07/10/20160710-Setting-up-a-Github-Pages-blog-with-Hexo/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="Zhe Lin">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="https://avatars2.githubusercontent.com/u/1837048">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="LinZhe's Notes">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="LinZhe's Notes" src="">
+    </span>
+  </span>
 
     
       <header class="post-header">
@@ -1532,7 +1763,7 @@
             
               
                 
-                <a class="post-title-link" href="/2016/07/10/Setting-up-a-Github-Pages-blog-with-Hexo/" itemprop="url">
+                <a class="post-title-link" href="/2016/07/10/20160710-Setting-up-a-Github-Pages-blog-with-Hexo/" itemprop="url">
                   Setting up a Github Pages blog with Hexo
                 </a>
               
@@ -1542,24 +1773,30 @@
 
         <div class="post-meta">
           <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-07-10T00:14:33+08:00" content="2016-07-10">
-              2016-07-10
-            </time>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-07-10T00:14:33+08:00">
+                2016-07-10
+              </time>
+            
+
+            
+
+            
           </span>
 
           
             <span class="post-category" >
-              &nbsp; | &nbsp;
+              <span class="post-meta-divider">|</span>
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
               </span>
               <span class="post-meta-item-text">分类于</span>
               
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
                   <a href="/categories/github/" itemprop="url" rel="index">
                     <span itemprop="name">github</span>
                   </a>
@@ -1567,7 +1804,6 @@
 
                 
                 
-
               
             </span>
           
@@ -1575,9 +1811,9 @@
           
             
               <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/07/10/Setting-up-a-Github-Pages-blog-with-Hexo/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/07/10/Setting-up-a-Github-Pages-blog-with-Hexo/" itemprop="commentsCount"></span>
+                <span class="post-meta-divider">|</span>
+                <a href="/2016/07/10/20160710-Setting-up-a-Github-Pages-blog-with-Hexo/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/07/10/20160710-Setting-up-a-Github-Pages-blog-with-Hexo/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -1587,8 +1823,8 @@
 
           
           
-             <span id="/2016/07/10/Setting-up-a-Github-Pages-blog-with-Hexo/" class="leancloud_visitors" data-flag-title="Setting up a Github Pages blog with Hexo">
-               &nbsp; | &nbsp;
+             <span id="/2016/07/10/20160710-Setting-up-a-Github-Pages-blog-with-Hexo/" class="leancloud_visitors" data-flag-title="Setting up a Github Pages blog with Hexo">
+               <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
                </span>
@@ -1598,6 +1834,9 @@
           
 
           
+
+          
+
         </div>
       </header>
     
@@ -1611,23 +1850,23 @@
       
         
           
-            <h3 id="安装-Node-js"><a href="#安装-Node-js" class="headerlink" title="安装 Node.js"></a>安装 Node.js</h3><hr>
-<ol>
-<li>从<a href="https://nodejs.org/en/" target="_blank" rel="external">Node.js下载地址</a>下载相应的包进行安装</li>
-<li>在安装好Node.js，会默认安装好npm</li>
-<li>使用npm安装Hexo<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">npm install -g hexo</div></pre></td></tr></table></figure>
-</li>
-</ol>
-<h3 id="使用Hexo"><a href="#使用Hexo" class="headerlink" title="使用Hexo"></a>使用Hexo</h3><hr>
-<h4 id="创建文件目录"><a href="#创建文件目录" class="headerlink" title="创建文件目录"></a>创建文件目录</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ hexo init username.github.io</div><div class="line">$ cd username.github.io</div></pre></td></tr></table></figure>
-<h4 id="修改相关的配置，使用github部署"><a href="#修改相关的配置，使用github部署" class="headerlink" title="修改相关的配置，使用github部署"></a>修改相关的配置，使用github部署</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">vi _config.yml</div></pre></td></tr></table></figure>
-<p>在Deployment的配置中添加<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">deploy:</div><div class="line">  repo: https://github.com/username/username.github.io</div><div class="line">  type: git</div></pre></td></tr></table></figure></p>
-<h3 id="本地测试"><a href="#本地测试" class="headerlink" title="本地测试"></a>本地测试</h3><p>使用Hexo命令<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">hexo server</div></pre></td></tr></table></figure></p>
-<p>启动本地测试服务，访问<a href="http://localhost:4000" target="_blank" rel="external">http://localhost:4000</a>，可以看到默认的主题与blog文章。</p>
-<h3 id="更多Hexo命令"><a href="#更多Hexo命令" class="headerlink" title="更多Hexo命令"></a>更多Hexo命令</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">hexo deploy # 部署到github</div><div class="line">hexo generate # 生成静态文件</div><div class="line">hexo clean    # 清除生成的静态文件</div></pre></td></tr></table></figure>
-<h3 id="更多主题"><a href="#更多主题" class="headerlink" title="更多主题"></a>更多主题</h3><p>默认的主题可以在<a href="http://www.hexo.io/theme" target="_blank" rel="external">hexo.io</a>中获取，方法很简单，只要将主题的代码chechout到theme目录下，然后修改_config.yml文件中的theme的值，重启测试服务就可以，十分方便。</p>
+          安装 Node.js
 
-          
+从Node.js下载地址下载相应的包进行安装
+在安装好Node.js，会默认安装好npm
+使用npm安装Hexo1npm install -g hexo
+
+
+使用Hexo
+创建文件目录12$ hexo init username.github.io$ cd username.
+          ...
+          <!--noindex-->
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/07/10/20160710-Setting-up-a-Github-Pages-blog-with-Hexo/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -1639,6 +1878,7 @@
     <div>
       
     </div>
+
 
     <footer class="post-footer">
       
@@ -1688,7 +1928,7 @@
 
       
 
-      <section class="site-overview sidebar-panel  sidebar-panel-active ">
+      <section class="site-overview sidebar-panel sidebar-panel-active">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="https://avatars2.githubusercontent.com/u/1837048"
@@ -1735,17 +1975,6 @@
 
         <div class="links-of-author motion-element">
           
-            
-              <span class="links-of-author-item">
-                <a href="https://github.com/linzhe" target="_blank" title="GitHub">
-                  
-                    <i class="fa fa-fw fa-github"></i>
-                  
-                  GitHub
-                </a>
-              </span>
-            
-          
         </div>
 
         
@@ -1753,6 +1982,9 @@
 
         
         
+
+        
+
 
       </section>
 
@@ -1778,8 +2010,9 @@
   <span class="author" itemprop="copyrightHolder">Zhe Lin</span>
 </div>
 
+
 <div class="powered-by">
-  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
 </div>
 
 <div class="theme-info">
@@ -1788,6 +2021,7 @@
     NexT.Pisces
   </a>
 </div>
+
 
         
 
@@ -1821,49 +2055,49 @@
 
 
   
-  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
 
   
-  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
 
   
-  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
 
   
-  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
 
   
-  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
 
   
-  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
-
-
-  
-
-
-  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
-
-  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
-
-
-
-  
-  
-
-
-  <script type="text/javascript" src="/js/src/affix.js?v=5.0.1"></script>
-
-  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.0.1"></script>
-
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
 
 
   
 
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
   
 
 
-  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.0"></script>
+
+
+
+  
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
 
 
 
@@ -1888,7 +2122,8 @@
 
   
     
-    <script src="/vendors/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    
+    <script src="/lib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
     <script src="/js/src/hook-duoshuo.js"></script>
   
 
@@ -1897,29 +2132,33 @@
 
 
 
+
+
   
   
 
   
-  <script type="text/x-mathjax-config">
-    MathJax.Hub.Config({
-      tex2jax: {
-        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
-        processEscapes: true,
-        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-      }
-    });
-  </script>
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
 
-  <script type="text/x-mathjax-config">
-    MathJax.Hub.Queue(function() {
-      var all = MathJax.Hub.getAllJax(), i;
-      for (i=0; i < all.length; i += 1) {
-        all[i].SourceElement().parentNode.className += ' has-jax';
-      }
-    });
-  </script>
-  <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
 
 
   
@@ -2032,6 +2271,22 @@
 
 
   
+
+  
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
+
+  
+  
+  <script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
+  
+
+  <script src="/js/src/algolia-search.js?v=5.1.0"></script>
+
+
 
 </body>
 </html>
