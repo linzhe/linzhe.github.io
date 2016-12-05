@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.linzhe.me/"/>
-  <updated>2016-12-03T11:42:34.000Z</updated>
+  <updated>2016-12-05T13:22:02.000Z</updated>
   <id>http://www.linzhe.me/</id>
   
   <author>
@@ -14,6 +14,36 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>centos6安装tensoflow</title>
+    <link href="http://www.linzhe.me/2016/12/05/20161205-centos6-install-tensoflow/"/>
+    <id>http://www.linzhe.me/2016/12/05/20161205-centos6-install-tensoflow/</id>
+    <published>2016-12-05T12:48:57.000Z</published>
+    <updated>2016-12-05T13:22:02.000Z</updated>
+    
+    <content type="html">&lt;h1 id=&quot;0-升级python2-6&quot;&gt;&lt;a href=&quot;#0-升级python2-6&quot; class=&quot;headerlink&quot; title=&quot;0 升级python2.6&quot;&gt;&lt;/a&gt;0 升级python2.6&lt;/h1&gt;&lt;p&gt;系统默认安装的Python是2.6.6的，我们需要升级到Python2.7，用wget命令从官方下载源文件，然后解压进行编译&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;4&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;5&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;6&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;wget https://www.python.org/ftp/python/2.7.12/Python-2.7.12.tgz&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;tar xvf Python-2.7.12.tgz&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;cd Python-2.7.12&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;make &amp;amp;&amp;amp; make install&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;mv /usr/bin/python /usr/bin/python2.6.6&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;ln -s /usr/local/bin/python2.7 /usr/bin/python&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;然后编辑/usr/bin/yum，将第一行的#!/usr/bin/python修改成#!/usr/bin/python2.6.6&lt;br&gt;现在执行yum命令已经不会出现之前的错误信息了。&lt;/p&gt;
+&lt;h1 id=&quot;1-安装pip&quot;&gt;&lt;a href=&quot;#1-安装pip&quot; class=&quot;headerlink&quot; title=&quot;1 安装pip&quot;&gt;&lt;/a&gt;1 安装pip&lt;/h1&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;4&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;5&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;wget https://bootstrap.pypa.io/get-pip.py&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;python get-pip.py&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;whereis pip&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;ln -s /usr/local/bin/pip2.7 /usr/bin/pip&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;h1 id=&quot;2-安装依赖的lib&quot;&gt;&lt;a href=&quot;#2-安装依赖的lib&quot; class=&quot;headerlink&quot; title=&quot;2 安装依赖的lib&quot;&gt;&lt;/a&gt;2 安装依赖的lib&lt;/h1&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;sudo yum -y install epel-release&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;sudo yum -y install gcc gcc-c++ python-pip python-devel atlas atlas-devel gcc-gfortran openssl-devel libffi-devel&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;pip install --upgrade numpy scipy wheel cryptography&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;由于CentOS6的系统安装了epel-release-latest-7.noarch.rpm 导致在使用yum命令时出现Error: xz compression not available问题。&lt;br&gt;解决方法：&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;4&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1.到http://ftp.riken.jp/Linux/fedora/epel/下载epel-release-latest-6.noarch.rpm&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2.卸载epel-release-latest-7.noarch.rpm：yum remove epel-release&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3.清空epel目录：rm -rf/var/cache/yum/x86_64/6/epel/&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;4.安装epel6:rpm -ivhepel-release-latest-6.noarch.rpm&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;h1 id=&quot;3-安装tensorflow&quot;&gt;&lt;a href=&quot;#3-安装tensorflow&quot; class=&quot;headerlink&quot; title=&quot;3 安装tensorflow&quot;&gt;&lt;/a&gt;3 安装tensorflow&lt;/h1&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;sudo pip install --upgrade https://storage.googleapis.com/tensorflow/linux/cpu/tensorflow-0.12.0rc0-cp27-none-linux_x86_64.whl&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;0-升级python2-6&quot;&gt;&lt;a href=&quot;#0-升级python2-6&quot; class=&quot;headerlink&quot; title=&quot;0 升级python2.6&quot;&gt;&lt;/a&gt;0 升级python2.6&lt;/h1&gt;&lt;p&gt;系统默认安装的Python是2.6.6的，我们需要升
+    
+    </summary>
+    
+      <category term="深度学习" scheme="http://www.linzhe.me/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"/>
+    
+    
+      <category term="tensoflow" scheme="http://www.linzhe.me/tags/tensoflow/"/>
+    
+  </entry>
   
   <entry>
     <title>词向量应用</title>
@@ -108,9 +138,9 @@
       <category term="深度学习" scheme="http://www.linzhe.me/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"/>
     
     
-      <category term="深度学习" scheme="http://www.linzhe.me/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"/>
-    
       <category term="caffe" scheme="http://www.linzhe.me/tags/caffe/"/>
+    
+      <category term="深度学习" scheme="http://www.linzhe.me/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"/>
     
   </entry>
   
