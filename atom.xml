@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.linzhe.me/"/>
-  <updated>2016-12-05T13:22:02.000Z</updated>
+  <updated>2016-12-18T04:34:47.000Z</updated>
   <id>http://www.linzhe.me/</id>
   
   <author>
@@ -16,11 +16,42 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>安装配置mysql</title>
+    <link href="http://www.linzhe.me/2016/12/15/20161215-install-and-setting-mysql-sever/"/>
+    <id>http://www.linzhe.me/2016/12/15/20161215-install-and-setting-mysql-sever/</id>
+    <published>2016-12-15T02:05:16.000Z</published>
+    <updated>2016-12-18T04:34:47.000Z</updated>
+    
+    <content type="html">&lt;h1 id=&quot;0-安装mysql&quot;&gt;&lt;a href=&quot;#0-安装mysql&quot; class=&quot;headerlink&quot; title=&quot;0 安装mysql&quot;&gt;&lt;/a&gt;0 安装mysql&lt;/h1&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;sudo yum install -y mysql-server mysql mysql-devel&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;service mysqld start&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;过程比较简单，可以直接mysq server启动了，如果需要修改mysql数据的存放目录，可以修改my.conf文件里相应的配置。&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;# 查看my.conf位置&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;mysql --help | grep my.cnf&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;vi /your/path/my.conf&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;修改datadir等相应的内容，重启server&lt;/p&gt;
+&lt;h1 id=&quot;账号设置&quot;&gt;&lt;a href=&quot;#账号设置&quot; class=&quot;headerlink&quot; title=&quot;账号设置&quot;&gt;&lt;/a&gt;账号设置&lt;/h1&gt;&lt;p&gt;mysql数据库安装完以后只会有一个root管理员账号，但是此时的root账号还并没有为其设置密码，需要设置。&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;/usr/bin/mysqladmin -u root password &amp;apos;new-password&amp;apos;　　// 为root账号设置密码&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;h2 id=&quot;添加账号并授权&quot;&gt;&lt;a href=&quot;#添加账号并授权&quot; class=&quot;headerlink&quot; title=&quot;添加账号并授权&quot;&gt;&lt;/a&gt;添加账号并授权&lt;/h2&gt;&lt;p&gt;添加一个test账号，并授权&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;CREATE USER test IDENTIFIED BY PASSWORD(&amp;apos;password&amp;apos;);&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;GRANT ALL PRIVILEGES ON *.* TO &amp;apos;test&amp;apos;@&amp;apos;%&amp;apos;;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;FLUSH PRIVILEGES;&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+&lt;h2 id=&quot;忘记root密码&quot;&gt;&lt;a href=&quot;#忘记root密码&quot; class=&quot;headerlink&quot; title=&quot;忘记root密码&quot;&gt;&lt;/a&gt;忘记root密码&lt;/h2&gt;&lt;p&gt;root密码是管理整个mysql数据库的入口，所以忘记时需要找回。&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;4&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;#杀掉进程 &lt;/div&gt;&lt;div class=&quot;line&quot;&gt;killall -TERM mysqld。&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;#启动 MySQL&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;bin/safe_mysqld --skip-grant-tables &amp;amp;&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;这样就可以不需要密码进行mysql&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;&amp;gt;use mysql&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&amp;gt;update user set password=password(&amp;quot;new_pass&amp;quot;) where user=&amp;quot;root&amp;quot;;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&amp;gt;flush privileges;&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;0-安装mysql&quot;&gt;&lt;a href=&quot;#0-安装mysql&quot; class=&quot;headerlink&quot; title=&quot;0 安装mysql&quot;&gt;&lt;/a&gt;0 安装mysql&lt;/h1&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;t
+    
+    </summary>
+    
+      <category term="note" scheme="http://www.linzhe.me/categories/note/"/>
+    
+    
+      <category term="mysql" scheme="http://www.linzhe.me/tags/mysql/"/>
+    
+  </entry>
+  
+  <entry>
     <title>centos6安装tensoflow</title>
     <link href="http://www.linzhe.me/2016/12/05/20161205-centos6-install-tensoflow/"/>
     <id>http://www.linzhe.me/2016/12/05/20161205-centos6-install-tensoflow/</id>
     <published>2016-12-05T12:48:57.000Z</published>
-    <updated>2016-12-05T13:22:02.000Z</updated>
+    <updated>2016-12-05T14:12:24.000Z</updated>
     
     <content type="html">&lt;h1 id=&quot;0-升级python2-6&quot;&gt;&lt;a href=&quot;#0-升级python2-6&quot; class=&quot;headerlink&quot; title=&quot;0 升级python2.6&quot;&gt;&lt;/a&gt;0 升级python2.6&lt;/h1&gt;&lt;p&gt;系统默认安装的Python是2.6.6的，我们需要升级到Python2.7，用wget命令从官方下载源文件，然后解压进行编译&lt;/p&gt;
 &lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;4&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;5&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;6&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;wget https://www.python.org/ftp/python/2.7.12/Python-2.7.12.tgz&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;tar xvf Python-2.7.12.tgz&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;cd Python-2.7.12&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;make &amp;amp;&amp;amp; make install&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;mv /usr/bin/python /usr/bin/python2.6.6&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;ln -s /usr/local/bin/python2.7 /usr/bin/python&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
@@ -30,6 +61,7 @@
 &lt;p&gt;由于CentOS6的系统安装了epel-release-latest-7.noarch.rpm 导致在使用yum命令时出现Error: xz compression not available问题。&lt;br&gt;解决方法：&lt;/p&gt;
 &lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;4&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1.到http://ftp.riken.jp/Linux/fedora/epel/下载epel-release-latest-6.noarch.rpm&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2.卸载epel-release-latest-7.noarch.rpm：yum remove epel-release&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3.清空epel目录：rm -rf/var/cache/yum/x86_64/6/epel/&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;4.安装epel6:rpm -ivhepel-release-latest-6.noarch.rpm&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
 &lt;h1 id=&quot;3-安装tensorflow&quot;&gt;&lt;a href=&quot;#3-安装tensorflow&quot; class=&quot;headerlink&quot; title=&quot;3 安装tensorflow&quot;&gt;&lt;/a&gt;3 安装tensorflow&lt;/h1&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;sudo pip install --upgrade https://storage.googleapis.com/tensorflow/linux/cpu/tensorflow-0.12.0rc0-cp27-none-linux_x86_64.whl&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;h1 id=&quot;4-test&quot;&gt;&lt;a href=&quot;#4-test&quot; class=&quot;headerlink&quot; title=&quot;4 test&quot;&gt;&lt;/a&gt;4 test&lt;/h1&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;4&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;5&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;6&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;7&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;8&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;ImportError: /lib64/libc.so.6: version `GLIBC_2.16&amp;apos; not found (required by /usr/local/lib/python2.7/site-packages/tensorflow/python/_pywrap_tensorflow.so)&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;Error importing tensorflow.  Unless you are using bazel,&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;you should not try to import tensorflow from its source directory;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;please exit the tensorflow source tree, and relaunch your python interpreter&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;from there.&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;## 解决方法&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;下载新版本glibc安装&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
 </content>
     
     <summary type="html">
