@@ -1,0 +1,20 @@
+# Site settings
+title: Linzhe的博客
+email: m23linzhe (AT) gmail.com
+description: > # this means to ignore newlines until "baseurl:"
+  记录每天的心情和收获，不积跬步无以至千里！
+copyright: >
+  本站所有内容的版权归作者所有，如需转载和使用请与作者联系，
+  请尊重知识，尊重版权。
+#baseurl: "/~zuoyuan/blog" # the subpath of your site, e.g. /blog/
+#url: "http://home.ustc.edu.cn" # the base hostname & protocol for your site
+zhihu_username: linzhe
+github_username:  linzhe
+
+# Build settings
+markdown: kramdown
+
+
+# wiki
+wikiurl: /wiki
+zhiziurl: http://www.linzhe.me
